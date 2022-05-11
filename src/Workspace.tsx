@@ -39,11 +39,11 @@ export function Workspace({ style, className }: CSSForwardingProps) {
     () =>
       range(2)
         .map((rowOffset) => cursor.row - rowOffset)
-        .filter((rowIndex) => pattern[rowIndex] != null)
+        .filter((rowIndex) => pattern.rows[rowIndex] != null)
         .map((rowIndex) => ({
           rowIndex,
           isBackgroundRow: rowIndex !== cursor.row,
-          stitches: pattern[rowIndex].map((s, column) => ({
+          stitches: pattern.rows[rowIndex].map((s, column) => ({
             color: palette[s],
             isFocused: cursor.row === rowIndex && cursor.column === column,
             column,
@@ -79,7 +79,7 @@ export function Workspace({ style, className }: CSSForwardingProps) {
             <div className={styles.scrollContent}>
               {rowsToDisplay.map(
                 (row) =>
-                  pattern[row.rowIndex] != null && (
+                  pattern.rows[row.rowIndex] != null && (
                     <div
                       key={row.rowIndex}
                       className={styles.rowContainer}

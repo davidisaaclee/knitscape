@@ -1,10 +1,26 @@
 import { invert } from "lodash";
 
 export type Stitch = number;
-export type Pattern = Stitch[][];
+export type Pattern = {
+  rows: Stitch[][];
+};
 
 // maps stitch material id -> CSS color string
 export type Palette = Record<number, string>;
+
+export const Pattern = {
+  create(rows: Stitch[][] = []): Pattern {
+    return { rows };
+  },
+
+  extents(p: Pattern) {
+    // assumes rectangular pattern
+    return {
+      width: p.rows[0] == null ? 0 : p.rows[0].length,
+      height: p.rows.length,
+    };
+  },
+};
 
 export interface Cursor {
   row: number;
@@ -19,7 +35,7 @@ function stitch(mat: number): Stitch {
 export function patternFromImageData(imageData: ImageData): [Pattern, Palette] {
   // color -> index
   const reversePalette: Record<string, number> = {};
-  const pattern: Pattern = [];
+  const pattern = Pattern.create();
   const pixelWidth = 4;
 
   let rowBuffer: Stitch[] = [];
@@ -43,7 +59,7 @@ export function patternFromImageData(imageData: ImageData): [Pattern, Palette] {
 
     rowBuffer.push(colorIndex);
     if ((i / pixelWidth) % imageData.width === imageData.width - 1) {
-      pattern.push(rowBuffer);
+      pattern.rows.push(rowBuffer);
       rowBuffer = [];
     }
   }
@@ -52,11 +68,11 @@ export function patternFromImageData(imageData: ImageData): [Pattern, Palette] {
 }
 
 export const example = {
-  pattern: [
+  pattern: Pattern.create([
     [stitch(0), stitch(0), stitch(0)],
     [stitch(1), stitch(2), stitch(3)],
     [stitch(2), stitch(1), stitch(2)],
-  ] as Pattern,
+  ]),
 
   palette: {
     0: "red",
@@ -65,7 +81,7 @@ export const example = {
     3: "black",
   } as Palette,
 
-  patternSweater: [
+  patternSweater: Pattern.create([
     [
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -564,7 +580,7 @@ export const example = {
       3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
       3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
     ],
-  ],
+  ]),
 
   paletteSweater: {
     "0": "#3961b4",

@@ -51,7 +51,7 @@ function App() {
             onClick={() => {
               setCursor((prev) => ({
                 ...prev,
-                row: Math.min(pattern.length - 1, prev.row + 1),
+                row: Math.min(pattern.rows.length - 1, prev.row + 1),
               }));
             }}
           >
@@ -110,7 +110,7 @@ function App() {
             setCursor((prev) => ({
               ...prev,
               column: Math.min(
-                pattern[cursor.column].length - 1,
+                pattern.rows[cursor.column].length - 1,
                 prev.column + 1
               ),
             }));
