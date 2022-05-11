@@ -6,7 +6,7 @@ import * as A from "./atoms";
 import styles from "./Workspace.module.scss";
 import { CSSForwardingProps } from "./utils";
 
-const stitchSize = 40;
+const stitchSize = 50;
 
 interface StitchDisplayInfo {
   color: string;

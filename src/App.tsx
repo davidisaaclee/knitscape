@@ -63,7 +63,6 @@ function App() {
         </div>
         <input
           type="file"
-          style={{ display: "none" }}
           onChange={async (event) => {
             const file = event.target.files?.[0];
             if (file == null) {
