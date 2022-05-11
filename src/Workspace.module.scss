@@ -1,4 +1,6 @@
-.container {
+.scrollContainer {
+  width: 100%;
+  height: 100%;
   position: relative;
   overflow: scroll;
 }
@@ -16,4 +18,18 @@
 
 .row {
   height: 80px;
+}
+
+.rowContainer {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.stitch {
+  // position: absolute;
+  border: 1px solid white;
+}
+
+.columnIndex {
+  font-size: 13px;
 }
