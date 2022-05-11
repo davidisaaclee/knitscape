@@ -1,0 +1,36 @@
+.container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  // flex: 1;
+
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+}
+
+.navbar {
+  height: 50px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.workspace {
+  flex: 1;
+}
+
+.toolbar {
+  height: 50px;
+  background-color: hsla(0, 0%, 0%, 0.1);
+
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+}
+
+.rowIndexDisplay {
+  display: flex;
+  flex-flow: row;
+}

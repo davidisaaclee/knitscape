@@ -1,0 +1,19 @@
+.container {
+  position: relative;
+  overflow: scroll;
+}
+
+.scrollContent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
+
+.row {
+  height: 80px;
+}
