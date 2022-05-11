@@ -88,7 +88,7 @@ function App() {
       <Workspace className={styles.workspace} />
       <div className={styles.toolbar}>
         <button
-          style={{ display: "flex", width: "10%" }}
+          style={{ display: "flex", width: "10%", touchAction: "manipulation" }}
           onClick={() => {
             setCursor((prev) => ({
               ...prev,
@@ -99,7 +99,7 @@ function App() {
           Back
         </button>
         <button
-          style={{ display: "flex", flex: 1 }}
+          style={{ display: "flex", flex: 1, touchAction: "manipulation" }}
           onClick={() => {
             setCursor((prev) => ({
               ...prev,
