@@ -90,10 +90,24 @@ function App() {
         <button
           style={{ display: "flex", width: "10%", touchAction: "manipulation" }}
           onClick={() => {
-            setCursor((prev) => ({
-              ...prev,
-              column: Math.max(0, prev.column - 1),
-            }));
+            setCursor((prev) => {
+              if (prev.column === 0) {
+                const prevRowIndex = Math.max(0, prev.row - 1);
+                if (prevRowIndex < 0) {
+                  return prev;
+                }
+                return {
+                  ...prev,
+                  row: prevRowIndex,
+                  column: pattern.rows[prevRowIndex].length - 1,
+                };
+              } else {
+                return {
+                  ...prev,
+                  column: Math.max(0, prev.column - 1),
+                };
+              }
+            });
           }}
         >
           Back
@@ -101,13 +115,21 @@ function App() {
         <button
           style={{ display: "flex", flex: 1, touchAction: "manipulation" }}
           onClick={() => {
-            setCursor((prev) => ({
-              ...prev,
-              column: Math.min(
-                pattern.rows[cursor.column].length - 1,
-                prev.column + 1
-              ),
-            }));
+            setCursor((prev) => {
+              const rowLength = pattern.rows[cursor.row].length;
+              if (prev.column + 1 >= rowLength) {
+                return {
+                  ...prev,
+                  row: Math.min(pattern.rows.length - 1, prev.row + 1),
+                  column: 0,
+                };
+              } else {
+                return {
+                  ...prev,
+                  column: prev.column + 1,
+                };
+              }
+            });
           }}
         >
           Next
