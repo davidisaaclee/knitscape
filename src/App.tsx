@@ -1,6 +1,4 @@
-import * as React from "react";
 import { useAtom } from "jotai";
-// import Row from "./Row";
 import Workspace from "./Workspace";
 import PatternMap from "./PatternMap";
 import * as A from "./atoms";
@@ -27,11 +25,6 @@ function App() {
   const [pattern, setPattern] = useAtom(A.pattern);
   const [, setPalette] = useAtom(A.palette);
   const [cursor, setCursor] = useAtom(A.cursor);
-
-  React.useEffect(() => {
-    setPalette(M.example.paletteSweater);
-    setPattern(M.example.patternSweater);
-  }, [setPattern, setPalette]);
 
   return (
     <div className={styles.container}>
