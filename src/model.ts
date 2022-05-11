@@ -8,6 +8,7 @@ export type Pattern = {
 // maps stitch material id -> CSS color string
 export type Palette = Record<number, string>;
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Pattern = {
   create(rows: Stitch[][] = []): Pattern {
     return { rows };

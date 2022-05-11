@@ -2,6 +2,7 @@ import * as React from "react";
 import { useAtom } from "jotai";
 // import Row from "./Row";
 import Workspace from "./Workspace";
+import PatternMap from "./PatternMap";
 import * as A from "./atoms";
 import * as M from "./model";
 import styles from "./App.module.scss";
@@ -24,13 +25,13 @@ function imageDataFrom(url: string): Promise<ImageData> {
 
 function App() {
   const [pattern, setPattern] = useAtom(A.pattern);
-  const [_palette, setPalette] = useAtom(A.palette);
+  const [, setPalette] = useAtom(A.palette);
   const [cursor, setCursor] = useAtom(A.cursor);
 
   React.useEffect(() => {
     setPalette(M.example.paletteSweater);
     setPattern(M.example.patternSweater);
-  }, []);
+  }, [setPattern, setPalette]);
 
   return (
     <div className={styles.container}>
@@ -58,9 +59,9 @@ function App() {
             row+
           </button>
         </div>
-        <button>zoom out</button>
         <input
           type="file"
+          style={{ display: "none" }}
           onChange={async (event) => {
             const file = event.target.files?.[0];
             if (file == null) {
@@ -119,6 +120,7 @@ function App() {
           Next
         </button>
       </div>
+      <PatternMap className={styles.minimap} />
     </div>
   );
 }

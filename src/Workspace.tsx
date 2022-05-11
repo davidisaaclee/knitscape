@@ -63,8 +63,11 @@ export function Workspace({ style, className }: CSSForwardingProps) {
     }
     const rect = x.getBoundingClientRect();
     const marginLeft = bounds == null ? 0 : bounds.width / 2;
-    scroller.scrollBy({ left: rect.left - marginLeft, behavior: "smooth" });
-  }, [cursor, scrollRef]);
+    scroller.scrollBy({
+      left: rect.left + stitchSize / 2 - marginLeft,
+      behavior: "smooth",
+    });
+  }, [cursor, scrollRef, bounds]);
 
   return (
     <Measure
@@ -92,7 +95,7 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                         <div
                           key={stitch.column}
                           className={styles.stitch}
-                          data-stitchColumn={stitch.column}
+                          data-stitchcolumn={stitch.column}
                           style={{
                             backgroundColor: stitch.color,
                             width: stitchSize,
