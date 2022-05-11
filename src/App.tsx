@@ -38,6 +38,7 @@ function App() {
       <div className={styles.navbar}>
         <div className={styles.rowIndexDisplay}>
           <button
+            style={{ padding: 4 }}
             onClick={() => {
               setCursor((prev) => ({
                 ...prev,
@@ -45,10 +46,18 @@ function App() {
               }));
             }}
           >
-            row-
+            -
           </button>
-          <h1>row {cursor.row}</h1>
+          <h1
+            style={{
+              fontSize: 24,
+              margin: 6,
+            }}
+          >
+            row {cursor.row}
+          </h1>
           <button
+            style={{ padding: 4 }}
             onClick={() => {
               setCursor((prev) => ({
                 ...prev,
@@ -56,7 +65,7 @@ function App() {
               }));
             }}
           >
-            row+
+            +
           </button>
         </div>
         <input
@@ -73,26 +82,10 @@ function App() {
             const [pattern, palette] = M.patternFromImageData(imageData);
             setPattern(pattern);
             setPalette(palette);
-            console.log(pattern);
-            console.log(palette);
           }}
         />
       </div>
       <Workspace className={styles.workspace} />
-      {/*
-      <div className={styles.workspace}>
-        {[0, 1].map(
-          (offset) =>
-            pattern[cursor.row - offset] != null && (
-              <Row
-                key={offset}
-                className={styles.row}
-                rowIndex={cursor.row - offset}
-              />
-            )
-        )}
-      </div>
-        */}
       <div className={styles.toolbar}>
         <button
           style={{ display: "flex", width: "10%" }}

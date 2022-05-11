@@ -94,7 +94,6 @@ export function PatternMap({ ...forwardedProps }: CSSForwardingProps) {
                 bounds.height
             ),
           ];
-          console.log(position);
           setCursor((prev) => ({
             ...prev,
             row: position[1],
