@@ -1,9 +1,18 @@
+import * as React from "react";
 import { useAtom } from "jotai";
 import Workspace from "./Workspace";
 import PatternMap from "./PatternMap";
 import * as A from "./atoms";
 import * as M from "./model";
 import styles from "./App.module.scss";
+
+function flipHoriz(dir: "ltr" | "rtl", shouldFlip: boolean): "ltr" | "rtl" {
+  if (!shouldFlip) {
+    return dir;
+  }
+
+  return dir === "ltr" ? "rtl" : "ltr";
+}
 
 function imageDataFrom(url: string): Promise<ImageData> {
   return new Promise((resolve) => {
@@ -25,6 +34,46 @@ function App() {
   const [pattern, setPattern] = useAtom(A.pattern);
   const [, setPalette] = useAtom(A.palette);
   const [cursor, setCursor] = useAtom(A.cursor);
+
+  const incrementCursor = React.useCallback(
+    (delta: number) => {
+      const patternExtents = M.Pattern.extents(pattern);
+      if (patternExtents.height + patternExtents.width === 0) {
+        return;
+      }
+      setCursor((prev) => {
+        const prevPosition =
+          (prev.directionHorizontal === "ltr"
+            ? prev.column
+            : patternExtents.width - 1 - prev.column) +
+          prev.row * patternExtents.width;
+        const nextPosition = Math.max(
+          Math.min(
+            prevPosition + delta,
+            patternExtents.width * patternExtents.height - 1
+          ),
+          0
+        );
+        const outRow = Math.floor(nextPosition / patternExtents.width);
+        const outDirH = flipHoriz(
+          prev.directionHorizontal,
+          (outRow - prev.row) % 2 !== 0
+        );
+        // before applying horizontal direction
+        const columnOffset = nextPosition % patternExtents.width;
+        return {
+          ...prev,
+          column:
+            outDirH === "ltr"
+              ? columnOffset
+              : patternExtents.width - 1 - columnOffset,
+          row: outRow,
+          directionHorizontal: outDirH,
+        };
+      });
+    },
+    [setCursor, pattern]
+  );
 
   return (
     <div className={styles.container}>
@@ -61,6 +110,16 @@ function App() {
             +
           </button>
         </div>
+        <button
+          onClick={() => {
+            setCursor((prev) => ({
+              ...prev,
+              directionHorizontal: flipHoriz(prev.directionHorizontal, true),
+            }));
+          }}
+        >
+          flip direction
+        </button>
         <input
           type="file"
           onChange={async (event) => {
@@ -74,6 +133,7 @@ function App() {
             const [pattern, palette] = M.patternFromImageData(imageData);
             setPattern(pattern);
             setPalette(palette);
+            setCursor(M.Cursor.create());
           }}
         />
       </div>
@@ -81,50 +141,15 @@ function App() {
       <div className={styles.toolbar}>
         <button
           style={{ display: "flex", width: "10%", touchAction: "manipulation" }}
-          onClick={() => {
-            setCursor((prev) => {
-              if (prev.column === 0) {
-                const prevRowIndex = Math.max(0, prev.row - 1);
-                if (prevRowIndex < 0) {
-                  return prev;
-                }
-                return {
-                  ...prev,
-                  row: prevRowIndex,
-                  column: pattern.rows[prevRowIndex].length - 1,
-                };
-              } else {
-                return {
-                  ...prev,
-                  column: Math.max(0, prev.column - 1),
-                };
-              }
-            });
-          }}
+          onClick={() => incrementCursor(-1)}
         >
           Back
         </button>
         <button
           style={{ display: "flex", flex: 1, touchAction: "manipulation" }}
-          onClick={() => {
-            setCursor((prev) => {
-              const rowLength = pattern.rows[cursor.row].length;
-              if (prev.column + 1 >= rowLength) {
-                return {
-                  ...prev,
-                  row: Math.min(pattern.rows.length - 1, prev.row + 1),
-                  column: 0,
-                };
-              } else {
-                return {
-                  ...prev,
-                  column: prev.column + 1,
-                };
-              }
-            });
-          }}
+          onClick={() => incrementCursor(1)}
         >
-          Next
+          Next {cursor.directionHorizontal === "ltr" ? "➡️" : "⬅️"}
         </button>
       </div>
       <PatternMap className={styles.minimap} />

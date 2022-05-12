@@ -9,5 +9,6 @@ export const palette = atomWithStorage<M.Palette>("palette", {});
 export const cursor = atomWithStorage<M.Cursor>("cursor", {
   row: 0,
   column: 0,
-  direction: "ltr",
+  directionHorizontal: "ltr",
+  directionVertical: "ascending",
 });

@@ -26,8 +26,31 @@ export const Pattern = {
 export interface Cursor {
   row: number;
   column: number;
-  direction: "ltr" | "rtl";
+  directionHorizontal: "ltr" | "rtl";
+  directionVertical: "ascending" | "descending";
 }
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const Cursor = {
+  create({
+    row = 0,
+    column = 0,
+    directionHorizontal = "ltr",
+    directionVertical = "ascending",
+  }: Partial<{
+    row: number;
+    column: number;
+    directionHorizontal: "ltr" | "rtl";
+    directionVertical: "ascending" | "descending";
+  }> = {}) {
+    return {
+      row,
+      column,
+      directionHorizontal,
+      directionVertical,
+    };
+  },
+};
 
 function stitch(mat: number): Stitch {
   return mat;
