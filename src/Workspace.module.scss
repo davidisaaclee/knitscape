@@ -21,8 +21,11 @@
 }
 
 .rowContainer {
+  position: absolute;
+
   display: flex;
   flex-flow: row nowrap;
+  transition: opacity 0.5s, transform 0.5s;
 }
 
 .stitch {

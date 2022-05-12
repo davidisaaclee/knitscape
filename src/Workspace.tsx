@@ -32,17 +32,14 @@ export function Workspace({ style, className }: CSSForwardingProps) {
   const rowsToDisplay = React.useMemo<
     Array<{
       stitches: StitchDisplayInfo[];
-      isBackgroundRow: boolean;
       rowIndex: number;
     }>
   >(
     () =>
-      range(2)
-        .map((rowOffset) => cursor.row - rowOffset)
+      [cursor.row + 1, cursor.row, cursor.row - 1, cursor.row - 2]
         .filter((rowIndex) => pattern.rows[rowIndex] != null)
         .map((rowIndex) => ({
           rowIndex,
-          isBackgroundRow: rowIndex !== cursor.row,
           stitches: pattern.rows[rowIndex].map((s, column) => ({
             color: palette[s],
             isFocused: cursor.row === rowIndex && cursor.column === column,
@@ -89,6 +86,14 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                       style={{
                         paddingLeft: bounds == null ? 0 : bounds.width / 2,
                         paddingRight: bounds == null ? 0 : bounds.width / 2,
+                        opacity:
+                          row.rowIndex === cursor.row ||
+                          row.rowIndex === cursor.row - 1
+                            ? 1
+                            : 0,
+                        transform: `translateY(${
+                          (cursor.row - row.rowIndex) * 100
+                        }%)`,
                       }}
                     >
                       {row.stitches.map((stitch) => (
@@ -100,19 +105,14 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                             backgroundColor: stitch.color,
                             width: stitchSize,
                             height: stitchSize,
-                            ...(stitch.isFocused
-                              ? {
-                                  transform: "scale(1.3)",
-                                  zIndex: 2,
-                                }
-                              : {}),
-
-                            ...(row.isBackgroundRow
-                              ? { transform: "scale(0.7)" }
-                              : {}),
+                            zIndex: stitch.isFocused ? 1 : 0,
+                            transform: `scale(${
+                              (row.rowIndex < cursor.row ? 0.7 : 1) *
+                              (stitch.isFocused ? 1.3 : 1)
+                            })`,
                           }}
                         >
-                          {!row.isBackgroundRow &&
+                          {row.rowIndex === cursor.row &&
                             (stitch.column % 5 === 0 ||
                               stitch.column === cursor.column) && (
                               <div className={styles.columnIndex}>
