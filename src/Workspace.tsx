@@ -112,12 +112,13 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                               : {}),
                           }}
                         >
-                          {(stitch.column % 5 === 0 ||
-                            stitch.column === cursor.column) && (
-                            <label className={styles.columnIndex}>
-                              {stitch.column}
-                            </label>
-                          )}
+                          {!row.isBackgroundRow &&
+                            (stitch.column % 5 === 0 ||
+                              stitch.column === cursor.column) && (
+                              <div className={styles.columnIndex}>
+                                {stitch.column}
+                              </div>
+                            )}
                         </div>
                       ))}
                     </div>

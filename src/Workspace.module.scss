@@ -26,10 +26,12 @@
 }
 
 .stitch {
-  // position: absolute;
   border: 1px solid white;
 }
 
 .columnIndex {
+  text-align: center;
   font-size: 13px;
+  position: relative;
+  top: -20px;
 }
