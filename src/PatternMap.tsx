@@ -94,6 +94,9 @@ export function PatternMap({ ...forwardedProps }: CSSForwardingProps) {
                 bounds.height
             ),
           ];
+          if (cursor.directionVertical === "descending") {
+            position[1] = patternExtents.height - position[1];
+          }
           setCursor((prev) => ({
             ...prev,
             row: position[1],
@@ -103,11 +106,27 @@ export function PatternMap({ ...forwardedProps }: CSSForwardingProps) {
       >
         <canvas
           ref={backgroundCanvasRef}
-          style={{ position: "absolute", width: "100%", height: "100%" }}
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            transform:
+              cursor.directionVertical === "ascending"
+                ? "scale(1)"
+                : "scale(1, -1)",
+          }}
         />
         <canvas
           ref={overlayCanvasRef}
-          style={{ position: "absolute", width: "100%", height: "100%" }}
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            transform:
+              cursor.directionVertical === "ascending"
+                ? "scale(1)"
+                : "scale(1, -1)",
+          }}
         />
       </div>
     </div>

@@ -6,12 +6,23 @@ import * as A from "./atoms";
 import * as M from "./model";
 import styles from "./App.module.scss";
 
-function flipHoriz(dir: "ltr" | "rtl", shouldFlip: boolean): "ltr" | "rtl" {
+function flipHoriz(
+  dir: "ltr" | "rtl",
+  shouldFlip: boolean = true
+): "ltr" | "rtl" {
   if (!shouldFlip) {
     return dir;
   }
-
   return dir === "ltr" ? "rtl" : "ltr";
+}
+function flipVert(
+  dir: "ascending" | "descending",
+  shouldFlip: boolean = true
+): "ascending" | "descending" {
+  if (!shouldFlip) {
+    return dir;
+  }
+  return dir === "ascending" ? "descending" : "ascending";
 }
 
 function imageDataFrom(url: string): Promise<ImageData> {
@@ -110,16 +121,29 @@ function App() {
             +
           </button>
         </div>
-        <button
-          onClick={() => {
-            setCursor((prev) => ({
-              ...prev,
-              directionHorizontal: flipHoriz(prev.directionHorizontal, true),
-            }));
-          }}
-        >
-          flip direction
-        </button>
+        <div style={{ display: "flex", flexFlow: "column" }}>
+          <button
+            onClick={() => {
+              setCursor((prev) => ({
+                ...prev,
+                directionHorizontal: flipHoriz(prev.directionHorizontal),
+              }));
+            }}
+          >
+            flip h
+          </button>
+          <button
+            onClick={() => {
+              setPattern(M.Pattern.flippingVertically);
+              setCursor((prev) => ({
+                ...prev,
+                directionVertical: flipVert(prev.directionVertical),
+              }));
+            }}
+          >
+            flip v
+          </button>
+        </div>
         <input
           type="file"
           onChange={async (event) => {
@@ -152,7 +176,12 @@ function App() {
           Next {cursor.directionHorizontal === "ltr" ? "➡️" : "⬅️"}
         </button>
       </div>
-      <PatternMap className={styles.minimap} />
+      <div className={styles.minimapContainer}>
+        <PatternMap className={styles.minimap} />
+        <span style={{ position: "absolute", left: -25, top: 40 }}>
+          {cursor.directionVertical === "ascending" ? "⬇️" : "⬆️"}
+        </span>
+      </div>
     </div>
   );
 }

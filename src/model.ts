@@ -1,4 +1,4 @@
-import { invert } from "lodash";
+import { invert, cloneDeep } from "lodash";
 
 export type Stitch = number;
 export type Pattern = {
@@ -20,6 +20,12 @@ export const Pattern = {
       width: p.rows[0] == null ? 0 : p.rows[0].length,
       height: p.rows.length,
     };
+  },
+
+  flippingVertically(p: Pattern) {
+    const out = cloneDeep(p);
+    out.rows.reverse();
+    return out;
   },
 };
 
