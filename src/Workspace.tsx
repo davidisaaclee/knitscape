@@ -1,12 +1,11 @@
-import { range } from "lodash";
 import * as React from "react";
 import { useAtom } from "jotai";
 import Measure from "react-measure";
 import * as A from "./atoms";
 import styles from "./Workspace.module.scss";
-import { CSSForwardingProps } from "./utils";
+import { CSSForwardingProps, classNames } from "./utils";
 
-const stitchSize = 50;
+const stitchSize = 30;
 
 interface StitchDisplayInfo {
   color: string;
@@ -49,6 +48,11 @@ export function Workspace({ style, className }: CSSForwardingProps) {
     [pattern, palette, cursor]
   );
 
+  const scrollContentInsetHorizontal = React.useMemo(
+    () => (bounds == null ? 0 : bounds.width / 2),
+    [bounds]
+  );
+
   React.useEffect(() => {
     const scroller = scrollRef.current;
     if (scroller == null) {
@@ -59,12 +63,11 @@ export function Workspace({ style, className }: CSSForwardingProps) {
       return;
     }
     const rect = x.getBoundingClientRect();
-    const marginLeft = bounds == null ? 0 : bounds.width / 2;
     scroller.scrollBy({
-      left: rect.left + stitchSize / 2 - marginLeft,
+      left: rect.left + stitchSize / 2 - scrollContentInsetHorizontal,
       behavior: "smooth",
     });
-  }, [cursor, scrollRef, bounds]);
+  }, [cursor, scrollRef, scrollContentInsetHorizontal]);
 
   return (
     <Measure
@@ -96,6 +99,14 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                         }%)`,
                       }}
                     >
+                      <span
+                        className={classNames(
+                          styles.rowInfoBox,
+                          styles.rowIndex
+                        )}
+                      >
+                        {row.rowIndex}
+                      </span>
                       {row.stitches.map((stitch) => (
                         <div
                           key={stitch.column}
@@ -121,6 +132,21 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                             )}
                         </div>
                       ))}
+                      <span className={styles.rowInfoBox}>
+                        {Array.from(
+                          row.stitches.reduce((allColors, { color }) => {
+                            allColors.add(color);
+                            return allColors;
+                          }, new Set<string>())
+                        )
+                          .sort()
+                          .map((color) => (
+                            <div
+                              className={styles.colorPreview}
+                              style={{ backgroundColor: color }}
+                            />
+                          ))}
+                      </span>
                     </div>
                   )
               )}

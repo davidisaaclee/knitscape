@@ -16,15 +16,40 @@
   justify-content: center;
 }
 
-.row {
-  height: 80px;
+.rowInfoBox {
+  position: -webkit-sticky;
+  position: sticky;
+  background-color: hsla(0, 0%, 100%, 0.8);
+
+  z-index: 10;
+
+  max-height: 80px;
+
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+
+  &:first-child {
+    left: 0;
+  }
+  &:last-child {
+    right: 0;
+  }
+}
+
+.rowIndex {
+  text-align: center;
+  padding: 4px;
 }
 
 .rowContainer {
   position: absolute;
+  height: 80px;
 
   display: flex;
   flex-flow: row nowrap;
+  align-items: center;
   transition: opacity 0.5s, transform 0.5s;
 }
 
@@ -37,4 +62,11 @@
   font-size: 13px;
   position: relative;
   top: -20px;
+}
+
+.colorPreview {
+  width: 14px;
+  height: 14px;
+  margin: 2px;
+  border: 1px solid black;
 }
