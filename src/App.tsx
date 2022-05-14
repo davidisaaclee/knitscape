@@ -178,6 +178,15 @@ function App() {
       </div>
       <div className={styles.minimapContainer}>
         <PatternMap className={styles.minimap} />
+        <span
+          style={{
+            position: "absolute",
+            left: -25,
+            top: cursor.directionVertical === "ascending" ? 0 : "100%",
+          }}
+        >
+          0
+        </span>
         <span style={{ position: "absolute", left: -25, top: 40 }}>
           {cursor.directionVertical === "ascending" ? "⬇️" : "⬆️"}
         </span>
