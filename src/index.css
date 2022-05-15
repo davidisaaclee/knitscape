@@ -4,6 +4,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #111;
+    color: #ccc;
+  }
+}
+
 #root {
   position: absolute;
   left: 0;
