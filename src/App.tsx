@@ -161,18 +161,20 @@ function App() {
           }}
         />
       </div>
+      <div
+        style={{
+          display: "none",
+          background: "orange",
+        }}
+      >
+        This is an info box
+      </div>
       <Workspace className={styles.workspace} />
       <div className={styles.toolbar}>
-        <button
-          style={{ display: "flex", width: "10%", touchAction: "manipulation" }}
-          onClick={() => incrementCursor(-1)}
-        >
+        <button style={{ width: "10%" }} onClick={() => incrementCursor(-1)}>
           Back
         </button>
-        <button
-          style={{ display: "flex", flex: 1, touchAction: "manipulation" }}
-          onClick={() => incrementCursor(1)}
-        >
+        <button style={{ flex: 1 }} onClick={() => incrementCursor(1)}>
           Next {cursor.directionHorizontal === "ltr" ? "➡️" : "⬅️"}
         </button>
       </div>

@@ -6,6 +6,7 @@ import styles from "./Workspace.module.scss";
 import { CSSForwardingProps, classNames } from "./utils";
 
 const stitchSize = 30;
+const rowHeight = 80;
 
 interface StitchDisplayInfo {
   color: string;
@@ -78,79 +79,84 @@ export function Workspace({ style, className }: CSSForwardingProps) {
     >
       {({ measureRef }) => (
         <div ref={measureRef} className={className} style={style}>
-          <div ref={scrollRef} className={styles.scrollContainer}>
-            <div className={styles.scrollContent}>
-              {rowsToDisplay.map(
-                (row) =>
-                  pattern.rows[row.rowIndex] != null && (
-                    <div
-                      key={row.rowIndex}
-                      className={styles.rowContainer}
-                      style={{
-                        paddingLeft: bounds == null ? 0 : bounds.width / 2,
-                        paddingRight: bounds == null ? 0 : bounds.width / 2,
-                        opacity:
-                          row.rowIndex === cursor.row ||
-                          row.rowIndex === cursor.row - 1
-                            ? 1
-                            : 0,
-                        transform: `translateY(${
-                          (cursor.row - row.rowIndex) * 100
-                        }%)`,
-                      }}
+          <div
+            ref={scrollRef}
+            className={styles.scrollContainer}
+            style={{ height: rowHeight * 2 }}
+          >
+            {rowsToDisplay.map(
+              (row) =>
+                pattern.rows[row.rowIndex] != null && (
+                  <div
+                    key={row.rowIndex}
+                    className={classNames(
+                      styles.rowContainer,
+                      row.rowIndex === cursor.row && styles.focusedRow
+                    )}
+                    style={{
+                      height: rowHeight,
+                      paddingLeft: scrollContentInsetHorizontal,
+                      paddingRight: scrollContentInsetHorizontal,
+                      opacity:
+                        row.rowIndex === cursor.row ||
+                        row.rowIndex === cursor.row - 1
+                          ? 1
+                          : 0,
+                      transform: `translateY(${
+                        (cursor.row - row.rowIndex) * 100
+                      }%)`,
+                    }}
+                  >
+                    <span
+                      className={classNames(styles.rowInfoBox, styles.rowIndex)}
+                      style={{ maxHeight: rowHeight }}
                     >
-                      <span
+                      {row.rowIndex}
+                    </span>
+                    {row.stitches.map((stitch) => (
+                      <div
+                        key={stitch.column}
                         className={classNames(
-                          styles.rowInfoBox,
-                          styles.rowIndex
+                          styles.stitch,
+                          stitch.isFocused && styles.focusedStitch
                         )}
+                        data-stitchcolumn={stitch.column}
+                        style={{
+                          backgroundColor: stitch.color,
+                          width: stitchSize,
+                          height: stitchSize,
+                        }}
                       >
-                        {row.rowIndex}
-                      </span>
-                      {row.stitches.map((stitch) => (
-                        <div
-                          key={stitch.column}
-                          className={styles.stitch}
-                          data-stitchcolumn={stitch.column}
-                          style={{
-                            backgroundColor: stitch.color,
-                            width: stitchSize,
-                            height: stitchSize,
-                            zIndex: stitch.isFocused ? 1 : 0,
-                            transform: `scale(${
-                              (row.rowIndex < cursor.row ? 0.7 : 1) *
-                              (stitch.isFocused ? 1.3 : 1)
-                            })`,
-                          }}
-                        >
-                          {row.rowIndex === cursor.row &&
-                            (stitch.column % 5 === 0 ||
-                              stitch.column === cursor.column) && (
-                              <div className={styles.columnIndex}>
-                                {stitch.column}
-                              </div>
-                            )}
-                        </div>
-                      ))}
-                      <span className={styles.rowInfoBox}>
-                        {Array.from(
-                          row.stitches.reduce((allColors, { color }) => {
-                            allColors.add(color);
-                            return allColors;
-                          }, new Set<string>())
-                        )
-                          .sort()
-                          .map((color) => (
-                            <div
-                              className={styles.colorPreview}
-                              style={{ backgroundColor: color }}
-                            />
-                          ))}
-                      </span>
-                    </div>
-                  )
-              )}
-            </div>
+                        {row.rowIndex === cursor.row &&
+                          (stitch.column % 5 === 0 ||
+                            stitch.column === cursor.column) && (
+                            <div className={styles.columnIndex}>
+                              {stitch.column}
+                            </div>
+                          )}
+                      </div>
+                    ))}
+                    <span
+                      className={styles.rowInfoBox}
+                      style={{ maxHeight: rowHeight }}
+                    >
+                      {Array.from(
+                        row.stitches.reduce((allColors, { color }) => {
+                          allColors.add(color);
+                          return allColors;
+                        }, new Set<string>())
+                      )
+                        .sort()
+                        .map((color) => (
+                          <div
+                            className={styles.colorPreview}
+                            style={{ backgroundColor: color }}
+                          />
+                        ))}
+                    </span>
+                  </div>
+                )
+            )}
           </div>
         </div>
       )}
