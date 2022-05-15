@@ -2,6 +2,7 @@ import * as React from "react";
 import { useAtom } from "jotai";
 import Workspace from "./Workspace";
 import PatternMap from "./PatternMap";
+import Infobox from "./Infobox";
 import * as A from "./atoms";
 import * as M from "./model";
 import styles from "./App.module.scss";
@@ -52,36 +53,7 @@ function App() {
       if (patternExtents.height + patternExtents.width === 0) {
         return;
       }
-      setCursor((prev) => {
-        const prevPosition =
-          (prev.directionHorizontal === "ltr"
-            ? prev.column
-            : patternExtents.width - 1 - prev.column) +
-          prev.row * patternExtents.width;
-        const nextPosition = Math.max(
-          Math.min(
-            prevPosition + delta,
-            patternExtents.width * patternExtents.height - 1
-          ),
-          0
-        );
-        const outRow = Math.floor(nextPosition / patternExtents.width);
-        const outDirH = flipHoriz(
-          prev.directionHorizontal,
-          (outRow - prev.row) % 2 !== 0
-        );
-        // before applying horizontal direction
-        const columnOffset = nextPosition % patternExtents.width;
-        return {
-          ...prev,
-          column:
-            outDirH === "ltr"
-              ? columnOffset
-              : patternExtents.width - 1 - columnOffset,
-          row: outRow,
-          directionHorizontal: outDirH,
-        };
-      });
+      setCursor((prev) => M.Cursor.offsetBy(prev, delta, patternExtents));
     },
     [setCursor, pattern]
   );
@@ -161,15 +133,10 @@ function App() {
           }}
         />
       </div>
-      <div
-        style={{
-          display: "none",
-          background: "orange",
-        }}
-      >
-        This is an info box
+      <div>
+        <Infobox />
+        <Workspace className={styles.workspace} />
       </div>
-      <Workspace className={styles.workspace} />
       <div className={styles.toolbar}>
         <button style={{ width: "10%" }} onClick={() => incrementCursor(-1)}>
           Back

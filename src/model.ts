@@ -22,10 +22,49 @@ export const Pattern = {
     };
   },
 
+  stitchCount(p: Pattern) {
+    const { width, height } = Pattern.extents(p);
+    return height * width;
+  },
+
   flippingVertically(p: Pattern) {
     const out = cloneDeep(p);
     out.rows.reverse();
     return out;
+  },
+
+  stitchAt(p: Pattern, c: Readonly<{ row: number; column: number }>): number {
+    return p.rows[c.row]?.[c.column] ?? -1;
+  },
+
+  countUntilStitchChange(
+    p: Pattern,
+    start: Cursor
+  ): {
+    count: number;
+    stitch?: { row: number; column: number; colorIndex: number };
+  } {
+    const patternExtents = Pattern.extents(p);
+
+    const offset = start.row * patternExtents.width + start.column;
+    const startStitch = Pattern.stitchAt(p, start);
+
+    for (let i = 0; i + offset < Pattern.stitchCount(p); i++) {
+      const cursorIndex = Cursor.offsetBy(start, i, patternExtents);
+      const colorIndex = Pattern.stitchAt(p, cursorIndex);
+      if (colorIndex !== startStitch) {
+        return {
+          count: i,
+          stitch: {
+            row: cursorIndex.row,
+            column: cursorIndex.column,
+            colorIndex,
+          },
+        };
+      }
+    }
+
+    return { count: Pattern.stitchCount(p) - offset };
   },
 };
 
@@ -54,6 +93,51 @@ export const Cursor = {
       column,
       directionHorizontal,
       directionVertical,
+    };
+  },
+
+  offsetBy(
+    prev: Cursor,
+    delta: number,
+    patternExtents: { width: number; height: number }
+  ): Cursor {
+    function flipHoriz(
+      dir: "ltr" | "rtl",
+      shouldFlip: boolean = true
+    ): "ltr" | "rtl" {
+      if (!shouldFlip) {
+        return dir;
+      }
+      return dir === "ltr" ? "rtl" : "ltr";
+    }
+
+    const prevPosition =
+      (prev.directionHorizontal === "ltr"
+        ? prev.column
+        : patternExtents.width - 1 - prev.column) +
+      prev.row * patternExtents.width;
+    const nextPosition = Math.max(
+      Math.min(
+        prevPosition + delta,
+        patternExtents.width * patternExtents.height - 1
+      ),
+      0
+    );
+    const outRow = Math.floor(nextPosition / patternExtents.width);
+    const outDirH = flipHoriz(
+      prev.directionHorizontal,
+      (outRow - prev.row) % 2 !== 0
+    );
+    // before applying horizontal direction
+    const columnOffset = nextPosition % patternExtents.width;
+    return {
+      ...prev,
+      column:
+        outDirH === "ltr"
+          ? columnOffset
+          : patternExtents.width - 1 - columnOffset,
+      row: outRow,
+      directionHorizontal: outDirH,
     };
   },
 };
