@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "http://david-lee.net/knitscape/static/css/main.3b041cd7.css",
-    "main.js": "http://david-lee.net/knitscape/static/js/main.7b2a31e7.js",
+    "main.css": "http://david-lee.net/knitscape/static/css/main.e084e49d.css",
+    "main.js": "http://david-lee.net/knitscape/static/js/main.d2299928.js",
     "static/js/787.3d1bb1f2.chunk.js": "http://david-lee.net/knitscape/static/js/787.3d1bb1f2.chunk.js",
     "index.html": "http://david-lee.net/knitscape/index.html",
-    "main.3b041cd7.css.map": "http://david-lee.net/knitscape/static/css/main.3b041cd7.css.map",
-    "main.7b2a31e7.js.map": "http://david-lee.net/knitscape/static/js/main.7b2a31e7.js.map",
+    "main.e084e49d.css.map": "http://david-lee.net/knitscape/static/css/main.e084e49d.css.map",
+    "main.d2299928.js.map": "http://david-lee.net/knitscape/static/js/main.d2299928.js.map",
     "787.3d1bb1f2.chunk.js.map": "http://david-lee.net/knitscape/static/js/787.3d1bb1f2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3b041cd7.css",
-    "static/js/main.7b2a31e7.js"
+    "static/css/main.e084e49d.css",
+    "static/js/main.d2299928.js"
   ]
 }
