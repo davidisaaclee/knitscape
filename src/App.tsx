@@ -150,11 +150,19 @@ function App() {
           ⬇️ Move a row down
         </button>
       </div>
-      <Infobox />
       <div className={styles.toolbar}>
-        <button className={styles.back} onClick={() => incrementCursor(-1)}>
-          Back
-        </button>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "stretch",
+          }}
+        >
+          <button className={styles.back} onClick={() => incrementCursor(-1)}>
+            Back
+          </button>
+          <Infobox />
+        </div>
         <button className={styles.next} onClick={() => incrementCursor(1)}>
           <span>Next</span>
           <span>{cursor.directionHorizontal === "ltr" ? "➡️" : "⬅️"}</span>

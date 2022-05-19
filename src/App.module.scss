@@ -4,7 +4,6 @@
   right: 0;
   top: 0;
   bottom: 0;
-  // flex: 1;
 
   display: flex;
   flex-flow: column nowrap;
@@ -64,8 +63,7 @@
   }
 
   .back {
-    height: 30%;
-    align-self: flex-start;
+    margin-right: 20px;
   }
 
   .next {
