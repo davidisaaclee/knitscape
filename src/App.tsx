@@ -76,34 +76,32 @@ function App() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.navbar}>
-        <div style={{ display: "flex", flexFlow: "column" }}>
-          <button
-            onClick={() => {
-              setCursor((prev) => ({
-                ...prev,
-                directionHorizontal: flipHoriz(prev.directionHorizontal),
-              }));
-            }}
-          >
-            flip h
-          </button>
-          <button
-            onClick={() => {
-              setPattern(M.Pattern.flippingVertically);
-              setCursor((prev) => ({
-                ...prev,
-                directionVertical: flipVert(prev.directionVertical),
-              }));
-            }}
-          >
-            flip v
-          </button>
-        </div>
+      <div className={styles.topToolbar}>
+        <button
+          onClick={() => {
+            setCursor((prev) => ({
+              ...prev,
+              directionHorizontal: flipHoriz(prev.directionHorizontal),
+            }));
+          }}
+        >
+          flip h
+        </button>
+        <button
+          onClick={() => {
+            setPattern(M.Pattern.flippingVertically);
+            setCursor((prev) => ({
+              ...prev,
+              directionVertical: flipVert(prev.directionVertical),
+            }));
+          }}
+        >
+          flip v
+        </button>
       </div>
       <div className={styles.workspaceContainer}>
         <button
-          style={{ padding: 4 }}
+          className={styles.rowIncrementButton}
           onClick={() => {
             setCursor((prev) => ({
               ...prev,
@@ -115,7 +113,7 @@ function App() {
         </button>
         <Workspace className={styles.workspace} />
         <button
-          style={{ padding: 4 }}
+          className={styles.rowIncrementButton}
           onClick={() => {
             setCursor((prev) => ({
               ...prev,
@@ -126,7 +124,7 @@ function App() {
           ⬇️ Move a row down
         </button>
       </div>
-      <Infobox style={{}} />
+      <Infobox />
       <div className={styles.toolbar}>
         <button
           style={{ height: "30%", alignSelf: "flex-start" }}
@@ -139,35 +137,15 @@ function App() {
         </button>
       </div>
       <div className={styles.minimapContainer}>
-        <div
-          onClick={launchFilePicker}
-          style={{
-            background: "hsla(0, 0%, 50%, 0.1)",
-            padding: 2,
-            textAlign: "center",
-          }}
-        >
+        <div className={styles.filePicker} onClick={launchFilePicker}>
           Upload pattern...
         </div>
         <PatternMap className={styles.minimap} />
         <span
-          style={{
-            position: "absolute",
-            left: -55,
-            marginTop: 13,
-            top: cursor.directionVertical === "ascending" ? 0 : "100%",
-          }}
-        >
-          Row 0
-        </span>
-        <span
-          style={{
-            position: "absolute",
-            transform: "translateX(calc(-100% - 10px))",
-            top: 40,
-            textAlign: "right",
-          }}
-        >
+          className={styles.rowZeroIndicator}
+          data-direction={cursor.directionVertical}
+        />
+        <span className={styles.verticalDirectionIndicator}>
           moving {cursor.directionVertical === "ascending" ? "down" : "up"} the
           pattern {cursor.directionVertical === "ascending" ? "⬇️" : "⬆️"}
         </span>
