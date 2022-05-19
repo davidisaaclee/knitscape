@@ -70,6 +70,11 @@
     flex: 1;
     background: var(--primary-action-background);
     color: var(--primary-action-title-color);
+    -webkit-tap-highlight-color: hsla(0, 0%, 100%, 0);
+
+    &:active {
+      background-color: var(--primary-action-active-highlight);
+    }
 
     & > * {
       margin: 0 4px;

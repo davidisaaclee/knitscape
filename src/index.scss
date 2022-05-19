@@ -2,6 +2,7 @@
   --secondary-text-color: gray;
   --primary-action-title-color: black;
   --primary-action-background: #fff858;
+  --primary-action-active-highlight: #efe828;
   --secondary-action-background: #eee;
   --secondary-action-title-color: black;
 
@@ -9,6 +10,7 @@
     --secondary-text-color: gray;
     --primary-action-title-color: white;
     --primary-action-background: #252;
+    --primary-action-active-highlight: #141;
     --secondary-action-title-color: white;
     --secondary-action-background: #333;
   }
@@ -18,6 +20,8 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  user-select: none;
 }
 
 @media (prefers-color-scheme: dark) {
