@@ -1,7 +1,7 @@
 .scrollContainer {
   position: relative;
   overflow-x: scroll;
-  overflow-y: clip;
+  overflow-y: hidden;
   width: 100%;
   height: 100%;
 }
