@@ -11,7 +11,14 @@
   justify-content: space-between;
 }
 
-.topToolbar {
+.topSection {
+  display: flex;
+  flex-flow: row nowrap;
+
+  justify-content: space-between;
+}
+
+.flipButtonSet {
   & > * {
     margin: 10px;
   }
@@ -57,9 +64,6 @@
 }
 
 .minimapContainer {
-  position: absolute;
-  right: 0;
-  top: 0;
   width: 150px;
   height: 150px;
   margin: 12px;

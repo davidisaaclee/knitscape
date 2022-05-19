@@ -76,28 +76,48 @@ function App() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.topToolbar}>
-        <button
-          onClick={() => {
-            setCursor((prev) => ({
-              ...prev,
-              directionHorizontal: flipHoriz(prev.directionHorizontal),
-            }));
-          }}
-        >
-          flip h
-        </button>
-        <button
-          onClick={() => {
-            setPattern(M.Pattern.flippingVertically);
-            setCursor((prev) => ({
-              ...prev,
-              directionVertical: flipVert(prev.directionVertical),
-            }));
-          }}
-        >
-          flip v
-        </button>
+      <div className={styles.topSection}>
+        <div className={styles.flipButtonSet}>
+          <button
+            onClick={() => {
+              setCursor((prev) => ({
+                ...prev,
+                directionHorizontal: flipHoriz(prev.directionHorizontal),
+              }));
+            }}
+          >
+            flip h
+          </button>
+          <button
+            onClick={() => {
+              setPattern(M.Pattern.flippingVertically);
+              setCursor((prev) => ({
+                ...prev,
+                directionVertical: flipVert(prev.directionVertical),
+              }));
+            }}
+          >
+            flip v
+          </button>
+        </div>
+        <div className={styles.minimapContainer}>
+          <div className={styles.filePicker} onClick={launchFilePicker}>
+            Upload pattern...
+          </div>
+          <PatternMap className={styles.minimap} />
+          <span
+            className={styles.rowZeroIndicator}
+            data-direction={cursor.directionVertical}
+          />
+          <span className={styles.verticalDirectionIndicator}>
+            moving {cursor.directionVertical === "ascending" ? "down" : "up"}{" "}
+            the pattern {cursor.directionVertical === "ascending" ? "⬇️" : "⬆️"}
+          </span>
+          <div>
+            {M.Pattern.extents(pattern).height} rows,{" "}
+            {M.Pattern.extents(pattern).width} columns
+          </div>
+        </div>
       </div>
       <div className={styles.workspaceContainer}>
         <button
@@ -135,24 +155,6 @@ function App() {
         <button style={{ flex: 1 }} onClick={() => incrementCursor(1)}>
           Next {cursor.directionHorizontal === "ltr" ? "➡️" : "⬅️"}
         </button>
-      </div>
-      <div className={styles.minimapContainer}>
-        <div className={styles.filePicker} onClick={launchFilePicker}>
-          Upload pattern...
-        </div>
-        <PatternMap className={styles.minimap} />
-        <span
-          className={styles.rowZeroIndicator}
-          data-direction={cursor.directionVertical}
-        />
-        <span className={styles.verticalDirectionIndicator}>
-          moving {cursor.directionVertical === "ascending" ? "down" : "up"} the
-          pattern {cursor.directionVertical === "ascending" ? "⬇️" : "⬆️"}
-        </span>
-        <div>
-          {M.Pattern.extents(pattern).height} rows,{" "}
-          {M.Pattern.extents(pattern).width} columns
-        </div>
       </div>
     </div>
   );
