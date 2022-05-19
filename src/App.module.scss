@@ -17,18 +17,28 @@
   justify-content: space-around;
 }
 
+.workspaceContainer {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-flow: column nowrap;
+}
+
 .workspace {
   display: flex;
+  align-self: stretch;
   flex-flow: column nowrap;
   justify-content: center;
 }
 
 .toolbar {
-  height: 50px;
-
+  height: 180px;
+  margin: 20px 10px;
   display: flex;
   align-items: stretch;
   justify-content: space-around;
+  flex-flow: column nowrap;
 
   & > * {
     margin: 4px;
@@ -38,16 +48,6 @@
     display: flex;
     touch-action: manipulation;
   }
-
-  margin-bottom: env(safe-area-inset-bottom);
-  margin-left: env(safe-area-inset-left);
-  margin-right: env(safe-area-inset-right);
-}
-
-.rowIndexDisplay {
-  display: flex;
-  flex-flow: row;
-  align-items: center;
 }
 
 .minimapContainer {

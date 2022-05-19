@@ -28,7 +28,11 @@
 
 .rowIndex {
   text-align: center;
-  padding: 4px;
+  padding: 6px;
+
+  @media (prefers-color-scheme: dark) {
+    color: black;
+  }
 }
 
 .rowContainer {

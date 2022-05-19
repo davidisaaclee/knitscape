@@ -61,38 +61,6 @@ function App() {
   return (
     <div className={styles.container}>
       <div className={styles.navbar}>
-        <div className={styles.rowIndexDisplay}>
-          <button
-            style={{ padding: 4 }}
-            onClick={() => {
-              setCursor((prev) => ({
-                ...prev,
-                row: Math.max(0, prev.row - 1),
-              }));
-            }}
-          >
-            -
-          </button>
-          <h1
-            style={{
-              fontSize: 16,
-              margin: 6,
-            }}
-          >
-            row {cursor.row}
-          </h1>
-          <button
-            style={{ padding: 4 }}
-            onClick={() => {
-              setCursor((prev) => ({
-                ...prev,
-                row: Math.min(pattern.rows.length - 1, prev.row + 1),
-              }));
-            }}
-          >
-            +
-          </button>
-        </div>
         <div style={{ display: "flex", flexFlow: "column" }}>
           <button
             onClick={() => {
@@ -133,12 +101,37 @@ function App() {
           }}
         />
       </div>
-      <div>
-        <Infobox />
+      <div className={styles.workspaceContainer}>
+        <button
+          style={{ padding: 4 }}
+          onClick={() => {
+            setCursor((prev) => ({
+              ...prev,
+              row: Math.min(pattern.rows.length - 1, prev.row + 1),
+            }));
+          }}
+        >
+          ⬆️ Move a row up
+        </button>
         <Workspace className={styles.workspace} />
+        <button
+          style={{ padding: 4 }}
+          onClick={() => {
+            setCursor((prev) => ({
+              ...prev,
+              row: Math.max(0, prev.row - 1),
+            }));
+          }}
+        >
+          ⬇️ Move a row down
+        </button>
       </div>
+      <Infobox style={{}} />
       <div className={styles.toolbar}>
-        <button style={{ width: "10%" }} onClick={() => incrementCursor(-1)}>
+        <button
+          style={{ height: "30%", alignSelf: "flex-start" }}
+          onClick={() => incrementCursor(-1)}
+        >
           Back
         </button>
         <button style={{ flex: 1 }} onClick={() => incrementCursor(1)}>
