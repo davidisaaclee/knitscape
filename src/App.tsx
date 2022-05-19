@@ -171,6 +171,10 @@ function App() {
           moving {cursor.directionVertical === "ascending" ? "down" : "up"} the
           pattern {cursor.directionVertical === "ascending" ? "⬇️" : "⬆️"}
         </span>
+        <div>
+          {M.Pattern.extents(pattern).height} rows,{" "}
+          {M.Pattern.extents(pattern).width} columns
+        </div>
       </div>
     </div>
   );
