@@ -8,7 +8,6 @@ import styles from "./Infobox.module.scss";
 export function Infobox({ className, style }: CSSForwardingProps) {
   const [cursor] = useAtom(A.cursor);
   const [pattern] = useAtom(A.pattern);
-  const [palette] = useAtom(A.palette);
   const nextStitchChange = React.useMemo(
     () => M.Pattern.countUntilStitchChange(pattern, cursor),
     [pattern, cursor]
