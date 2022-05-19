@@ -1,0 +1,48 @@
+:root {
+  --secondary-text-color: gray;
+  --primary-action-title-color: black;
+  --primary-action-background: #fff858;
+  --secondary-action-background: #eee;
+  --secondary-action-title-color: black;
+
+  @media (prefers-color-scheme: dark) {
+    --secondary-text-color: gray;
+    --primary-action-title-color: white;
+    --primary-action-background: #252;
+    --secondary-action-title-color: white;
+    --secondary-action-background: #333;
+  }
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #111;
+    color: #ccc;
+  }
+}
+
+#root {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  display: flex;
+}
+
+button {
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--secondary-action-background);
+  color: var(--secondary-action-title-color);
+}

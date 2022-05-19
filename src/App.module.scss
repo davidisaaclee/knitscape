@@ -21,6 +21,7 @@
 .flipButtonSet {
   & > * {
     margin: 10px;
+    padding: 10px;
   }
 }
 
@@ -61,42 +62,68 @@
     display: flex;
     touch-action: manipulation;
   }
+
+  .back {
+    height: 30%;
+    align-self: flex-start;
+  }
+
+  .next {
+    flex: 1;
+    background: var(--primary-action-background);
+    color: var(--primary-action-title-color);
+
+    & > * {
+      margin: 0 4px;
+    }
+    
+    &[direction="ltr"] {
+      flex-direction: row;
+    }
+    &[direction="rtl"] {
+      flex-direction: row-reverse;
+    }
+  }
 }
 
 .minimapContainer {
-  width: 150px;
-  height: 150px;
   margin: 12px;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.minimapMain {
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 .minimap {
-  width: 100%;
-  height: 100%;
+  width: 150px;
+  height: 150px;
 }
 
-.rowZeroIndicator {
-  &::after{
-    content: "Row 0";
-  }
-
-  position: absolute;
-  left: -55px;
-  margin-top: 13px;
-
-  &[data-direction="ascending"] {
-    top: 0;
-  }
-
-  &[data-direction="descending"] {
-    top: 100%;
-  }
-}
 
 .verticalDirectionIndicator {
   position: absolute;
-  transform: translateX(calc(-100% - 10px));
-  top: 40px;
-  text-align: right;
+  text-align: center;
+  font-style: italic;
+  color: var(--secondary-text-color);
+  writing-mode: vertical-rl;
+  transform: rotate(-180deg) translate(100%, 0);
+
+  &[data-direction="ascending"]::before {
+    font-style: normal;
+    content: "⬅️ ";
+  }
+  &[data-direction="descending"]::after {
+    font-style: normal;
+    content: " ➡️";
+  }
+}
+
+.dimensionsInfo {
+  text-align: center;
+  color: var(--secondary-text-color);
 }
 
 .filePicker {

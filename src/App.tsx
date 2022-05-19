@@ -7,6 +7,10 @@ import * as A from "./atoms";
 import * as M from "./model";
 import styles from "./App.module.scss";
 
+function horizDirToString(dir: "ltr" | "rtl"): string {
+  return dir === "ltr" ? "left-to-right" : "right-to-left";
+}
+
 function flipHoriz(
   dir: "ltr" | "rtl",
   shouldFlip: boolean = true
@@ -86,7 +90,8 @@ function App() {
               }));
             }}
           >
-            flip h
+            Change direction to{" "}
+            {horizDirToString(flipHoriz(cursor.directionHorizontal))}
           </button>
           <button
             onClick={() => {
@@ -97,25 +102,26 @@ function App() {
               }));
             }}
           >
-            flip v
+            Flip pattern vertically
           </button>
         </div>
         <div className={styles.minimapContainer}>
-          <div className={styles.filePicker} onClick={launchFilePicker}>
-            Upload pattern...
-          </div>
-          <PatternMap className={styles.minimap} />
-          <span
-            className={styles.rowZeroIndicator}
+          <div
+            className={styles.verticalDirectionIndicator}
             data-direction={cursor.directionVertical}
-          />
-          <span className={styles.verticalDirectionIndicator}>
+          >
             moving {cursor.directionVertical === "ascending" ? "down" : "up"}{" "}
-            the pattern {cursor.directionVertical === "ascending" ? "⬇️" : "⬆️"}
-          </span>
-          <div>
-            {M.Pattern.extents(pattern).height} rows,{" "}
-            {M.Pattern.extents(pattern).width} columns
+            the pattern
+          </div>
+          <div className={styles.minimapMain}>
+            <div className={styles.filePicker} onClick={launchFilePicker}>
+              Upload pattern...
+            </div>
+            <PatternMap className={styles.minimap} />
+            <div className={styles.dimensionsInfo}>
+              {M.Pattern.extents(pattern).height} rows,{" "}
+              {M.Pattern.extents(pattern).width} columns
+            </div>
           </div>
         </div>
       </div>
@@ -146,14 +152,12 @@ function App() {
       </div>
       <Infobox />
       <div className={styles.toolbar}>
-        <button
-          style={{ height: "30%", alignSelf: "flex-start" }}
-          onClick={() => incrementCursor(-1)}
-        >
+        <button className={styles.back} onClick={() => incrementCursor(-1)}>
           Back
         </button>
-        <button style={{ flex: 1 }} onClick={() => incrementCursor(1)}>
-          Next {cursor.directionHorizontal === "ltr" ? "➡️" : "⬅️"}
+        <button className={styles.next} onClick={() => incrementCursor(1)}>
+          <span>Next</span>
+          <span>{cursor.directionHorizontal === "ltr" ? "➡️" : "⬅️"}</span>
         </button>
       </div>
     </div>
