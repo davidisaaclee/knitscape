@@ -12,9 +12,6 @@ export function Infobox({ className, style }: CSSForwardingProps) {
     () => M.Pattern.countUntilStitchChange(pattern, cursor),
     [pattern, cursor]
   );
-  React.useEffect(() => {
-    console.log(nextStitchChange);
-  }, [nextStitchChange]);
 
   return (
     <div className={classNames(styles.container, className)} style={style}>
