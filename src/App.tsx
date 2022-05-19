@@ -160,8 +160,16 @@ function App() {
         >
           Row 0
         </span>
-        <span style={{ position: "absolute", left: -25, top: 40 }}>
-          {cursor.directionVertical === "ascending" ? "⬇️" : "⬆️"}
+        <span
+          style={{
+            position: "absolute",
+            transform: "translateX(calc(-100% - 10px))",
+            top: 40,
+            textAlign: "right",
+          }}
+        >
+          moving {cursor.directionVertical === "ascending" ? "down" : "up"} the
+          pattern {cursor.directionVertical === "ascending" ? "⬇️" : "⬆️"}
         </span>
       </div>
     </div>
