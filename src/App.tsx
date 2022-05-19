@@ -75,7 +75,7 @@ function App() {
           </button>
           <h1
             style={{
-              fontSize: 24,
+              fontSize: 16,
               margin: 6,
             }}
           >

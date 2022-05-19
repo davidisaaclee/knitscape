@@ -38,6 +38,10 @@
     display: flex;
     touch-action: manipulation;
   }
+
+  margin-bottom: env(safe-area-inset-bottom);
+  margin-left: env(safe-area-inset-left);
+  margin-right: env(safe-area-inset-right);
 }
 
 .rowIndexDisplay {
