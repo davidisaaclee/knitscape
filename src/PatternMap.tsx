@@ -107,6 +107,7 @@ export function PatternMap({ ...forwardedProps }: CSSForwardingProps) {
         <canvas
           ref={backgroundCanvasRef}
           style={{
+            imageRendering: "crisp-edges",
             position: "absolute",
             width: "100%",
             height: "100%",
@@ -119,6 +120,7 @@ export function PatternMap({ ...forwardedProps }: CSSForwardingProps) {
         <canvas
           ref={overlayCanvasRef}
           style={{
+            imageRendering: "crisp-edges",
             position: "absolute",
             width: "100%",
             height: "100%",
