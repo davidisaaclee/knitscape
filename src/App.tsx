@@ -58,6 +58,22 @@ function App() {
     [setCursor, pattern]
   );
 
+  const launchFilePicker = useFilePicker({
+    async onChange(event) {
+      const file = (event.currentTarget as HTMLInputElement).files?.[0];
+      if (file == null) {
+        return;
+      }
+      const objectUrl = URL.createObjectURL(file);
+      const imageData = await imageDataFrom(objectUrl);
+      URL.revokeObjectURL(objectUrl);
+      const [pattern, palette] = M.patternFromImageData(imageData);
+      setPattern(pattern);
+      setPalette(palette);
+      setCursor(M.Cursor.create());
+    },
+  });
+
   return (
     <div className={styles.container}>
       <div className={styles.navbar}>
@@ -84,22 +100,6 @@ function App() {
             flip v
           </button>
         </div>
-        <input
-          type="file"
-          onChange={async (event) => {
-            const file = event.target.files?.[0];
-            if (file == null) {
-              return;
-            }
-            const objectUrl = URL.createObjectURL(file);
-            const imageData = await imageDataFrom(objectUrl);
-            URL.revokeObjectURL(objectUrl);
-            const [pattern, palette] = M.patternFromImageData(imageData);
-            setPattern(pattern);
-            setPalette(palette);
-            setCursor(M.Cursor.create());
-          }}
-        />
       </div>
       <div className={styles.workspaceContainer}>
         <button
@@ -139,15 +139,26 @@ function App() {
         </button>
       </div>
       <div className={styles.minimapContainer}>
+        <div
+          onClick={launchFilePicker}
+          style={{
+            background: "hsla(0, 0%, 50%, 0.1)",
+            padding: 2,
+            textAlign: "center",
+          }}
+        >
+          Upload pattern...
+        </div>
         <PatternMap className={styles.minimap} />
         <span
           style={{
             position: "absolute",
-            left: -25,
+            left: -55,
+            marginTop: 13,
             top: cursor.directionVertical === "ascending" ? 0 : "100%",
           }}
         >
-          0
+          Row 0
         </span>
         <span style={{ position: "absolute", left: -25, top: 40 }}>
           {cursor.directionVertical === "ascending" ? "⬇️" : "⬆️"}
@@ -155,6 +166,21 @@ function App() {
       </div>
     </div>
   );
+}
+
+function useFilePicker({ onChange }: { onChange: (event: Event) => void }) {
+  const input = React.useMemo(() => {
+    const fileInput = document.createElement("input");
+    fileInput.setAttribute("type", "file");
+    return fileInput;
+  }, []);
+
+  React.useEffect(() => {
+    input.addEventListener("change", onChange);
+    return () => input.removeEventListener("change", onChange);
+  }, [input, onChange]);
+
+  return React.useCallback(() => input.click(), [input]);
 }
 
 export default App;
