@@ -18,7 +18,7 @@ export function Workspace({ style, className }: CSSForwardingProps) {
   const scrollRef = React.useRef<React.ElementRef<"div">>(null);
   const [palette] = useAtom(A.palette);
   const [pattern] = useAtom(A.pattern);
-  const [cursor] = useAtom(A.cursor);
+  const [cursor, setCursor] = useAtom(A.cursor);
 
   const [bounds, setBounds] = React.useState<null | {
     width: number;
@@ -125,6 +125,13 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                           backgroundColor: stitch.color,
                           width: stitchSize,
                           height: stitchSize,
+                        }}
+                        onClick={() => {
+                          setCursor((c) => ({
+                            ...c,
+                            row: row.rowIndex,
+                            column: stitch.column,
+                          }));
                         }}
                       >
                         {row.rowIndex === cursor.row &&
