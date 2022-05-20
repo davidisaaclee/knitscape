@@ -2,13 +2,15 @@
   text-align: left;
 }
 
-.nextStitchColorPreview {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border: 1px solid black;
-  transform: translateY(2px);
-  margin: 0 1px;
+.nextStitchInfo {
+  & .colorPreview {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 1px solid black;
+    transform: translateY(2px);
+    margin: 0 1px;
+  }
 }
 
 .nextRowInfo {

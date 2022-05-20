@@ -164,6 +164,33 @@ function App() {
       </div>
       <div className={styles.toolbar}>
         <div
+          className={styles.auxiliary}
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "stretch",
+          }}
+        >
+          <button
+            className={styles.jumpToNextStitchChange}
+            onClick={() => {
+              const untilNextStitchType = M.Pattern.countUntilStitchChange(
+                pattern,
+                cursor
+              );
+              setCursor((c) =>
+                M.Cursor.offsetBy(
+                  c,
+                  untilNextStitchType.count,
+                  M.Pattern.extents(pattern)
+                )
+              );
+            }}
+          >
+            Jump to next color
+          </button>
+        </div>
+        <div
           style={{
             display: "flex",
             flexDirection: "row",

@@ -34,7 +34,7 @@ export function Infobox({ className, style }: CSSForwardingProps) {
 
   return (
     <div className={classNames(styles.container, className)} style={style}>
-      <div>
+      <div className={styles.nextStitchInfo}>
         <b>{nextStitchChange.count}</b> more{" "}
         {pluralize("stitch", "stitches")(nextStitchChange.count)} until next
         color{" "}
@@ -42,7 +42,7 @@ export function Infobox({ className, style }: CSSForwardingProps) {
           <span>
             (
             <span
-              className={styles.nextStitchColorPreview}
+              className={styles.colorPreview}
               style={{
                 backgroundColor: nextStitchColor,
               }}

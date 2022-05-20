@@ -75,6 +75,12 @@
       background-color: var(--primary-action-active-highlight);
     }
   }
+
+  & .auxiliary {
+    & button {
+      padding: 8px;
+    }
+  }
 }
 
 .minimapContainer {
