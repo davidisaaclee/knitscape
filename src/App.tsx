@@ -90,8 +90,7 @@ function App() {
               }));
             }}
           >
-            Change direction to{" "}
-            {horizDirToString(flipHoriz(cursor.directionHorizontal))}
+            Flip pattern horizontally
           </button>
           <button
             onClick={() => {
@@ -164,8 +163,7 @@ function App() {
           <Infobox />
         </div>
         <button className={styles.next} onClick={() => incrementCursor(1)}>
-          <span>Next</span>
-          <span>{cursor.directionHorizontal === "ltr" ? "➡️" : "⬅️"}</span>
+          Next
         </button>
       </div>
     </div>

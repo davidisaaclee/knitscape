@@ -38,14 +38,22 @@ export function Workspace({ style, className }: CSSForwardingProps) {
     () =>
       [cursor.row + 1, cursor.row, cursor.row - 1, cursor.row - 2]
         .filter((rowIndex) => pattern.rows[rowIndex] != null)
-        .map((rowIndex) => ({
-          rowIndex,
-          stitches: pattern.rows[rowIndex].map((s, column) => ({
-            color: palette[s],
-            isFocused: cursor.row === rowIndex && cursor.column === column,
-            column,
-          })),
-        })),
+        .map((rowIndex) => {
+          const stitchValues = [...pattern.rows[rowIndex]].map(
+            (s, i) => [s, i] as const
+          );
+          if (cursor.directionHorizontal === "rtl") {
+            stitchValues.reverse();
+          }
+          return {
+            rowIndex,
+            stitches: stitchValues.map(([s, column]) => ({
+              color: palette[s],
+              isFocused: cursor.row === rowIndex && cursor.column === column,
+              column,
+            })),
+          };
+        }),
     [pattern, palette, cursor]
   );
 

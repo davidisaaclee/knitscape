@@ -75,17 +75,6 @@
     &:active {
       background-color: var(--primary-action-active-highlight);
     }
-
-    & > * {
-      margin: 0 4px;
-    }
-    
-    &[direction="ltr"] {
-      flex-direction: row;
-    }
-    &[direction="rtl"] {
-      flex-direction: row-reverse;
-    }
   }
 }
 
@@ -125,6 +114,7 @@
 }
 
 .dimensionsInfo {
+  margin: 2px;
   text-align: center;
   color: var(--secondary-text-color);
 }

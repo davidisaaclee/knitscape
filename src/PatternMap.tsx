@@ -97,6 +97,9 @@ export function PatternMap({ ...forwardedProps }: CSSForwardingProps) {
           if (cursor.directionVertical === "descending") {
             position[1] = patternExtents.height - position[1];
           }
+          if (cursor.directionHorizontal === "rtl") {
+            position[0] = patternExtents.width - position[0];
+          }
           setCursor((prev) => ({
             ...prev,
             row: position[1],
@@ -111,10 +114,12 @@ export function PatternMap({ ...forwardedProps }: CSSForwardingProps) {
             position: "absolute",
             width: "100%",
             height: "100%",
-            transform:
+            transform: [
               cursor.directionVertical === "ascending"
-                ? "scale(1)"
-                : "scale(1, -1)",
+                ? "scaleY(1)"
+                : "scaleY(-1)",
+              cursor.directionHorizontal === "ltr" ? "scaleX(1)" : "scaleX(-1)",
+            ].join(" "),
           }}
         />
         <canvas
@@ -124,10 +129,12 @@ export function PatternMap({ ...forwardedProps }: CSSForwardingProps) {
             position: "absolute",
             width: "100%",
             height: "100%",
-            transform:
+            transform: [
               cursor.directionVertical === "ascending"
-                ? "scale(1)"
-                : "scale(1, -1)",
+                ? "scaleY(1)"
+                : "scaleY(-1)",
+              cursor.directionHorizontal === "ltr" ? "scaleX(1)" : "scaleX(-1)",
+            ].join(" "),
           }}
         />
       </div>
