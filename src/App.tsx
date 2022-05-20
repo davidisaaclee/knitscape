@@ -219,9 +219,24 @@ function App() {
           </button>
           <Infobox />
         </div>
-        <button className={styles.next} onClick={() => incrementCursor(1)}>
-          Next
-        </button>
+        <div
+          style={{
+            display: "flex",
+            flexFlow: "row nowrap",
+            alignItems: "stretch",
+            flex: 1,
+          }}
+        >
+          <button
+            className={styles.jumpFive}
+            onClick={() => incrementCursor(5)}
+          >
+            Jump 5
+          </button>
+          <button className={styles.next} onClick={() => incrementCursor(1)}>
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
