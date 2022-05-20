@@ -101,7 +101,7 @@ function App() {
           }
         }}
       >
-        Update app
+        Update app (v2)
       </button>
       <div className={styles.topSection}>
         <div className={styles.flipContainer}>
