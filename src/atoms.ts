@@ -6,9 +6,4 @@ export const pattern = atomWithStorage<M.Pattern>(
   M.Pattern.create()
 );
 export const palette = atomWithStorage<M.Palette>("palette", {});
-export const cursor = atomWithStorage<M.Cursor>("cursor", {
-  row: 0,
-  column: 0,
-  directionHorizontal: "ltr",
-  directionVertical: "ascending",
-});
+export const cursor = atomWithStorage<M.Cursor>("cursor", M.Cursor.create());
