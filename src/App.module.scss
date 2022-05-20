@@ -14,15 +14,14 @@
   display: flex;
   flex-flow: row nowrap;
 
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
 }
 
-.flipButtonSet {
-  & > * {
-    margin: 10px;
-    padding: 10px;
-  }
+.flipButton {
+  padding: 10px;
 }
+
 
 .workspaceContainer {
   flex: 1;
@@ -94,22 +93,30 @@
   height: 150px;
 }
 
+.flipContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
 
-.verticalDirectionIndicator {
-  position: absolute;
+.directionIndicator {
   text-align: center;
   font-style: italic;
   color: var(--secondary-text-color);
-  writing-mode: vertical-rl;
-  transform: rotate(-180deg) translate(100%, 0);
-
-  &[data-direction="ascending"]::before {
-    font-style: normal;
-    content: "⬅️ ";
+  
+  &.vertical {
+    &[data-direction="ascending"]::after {
+      font-style: normal;
+      content: " ⬇️";
+    }
+    &[data-direction="descending"]::after {
+      font-style: normal;
+      content: " ⬆️";
+    }
   }
-  &[data-direction="descending"]::after {
-    font-style: normal;
-    content: " ➡️";
+
+  & em {
+    font-weight: bold;
   }
 }
 

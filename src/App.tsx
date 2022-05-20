@@ -6,6 +6,7 @@ import Infobox from "./Infobox";
 import * as A from "./atoms";
 import * as M from "./model";
 import styles from "./App.module.scss";
+import { classNames } from "./utils";
 
 function horizDirToString(dir: "ltr" | "rtl"): string {
   return dir === "ltr" ? "left-to-right" : "right-to-left";
@@ -81,18 +82,16 @@ function App() {
   return (
     <div className={styles.container}>
       <div className={styles.topSection}>
-        <div className={styles.flipButtonSet}>
-          <button
-            onClick={() => {
-              setCursor((prev) => ({
-                ...prev,
-                directionHorizontal: flipHoriz(prev.directionHorizontal),
-              }));
-            }}
+        <div className={styles.flipContainer}>
+          <div
+            className={classNames(styles.directionIndicator, styles.vertical)}
+            data-direction={cursor.directionVertical}
           >
-            Flip pattern horizontally
-          </button>
+            Moving {cursor.directionVertical === "ascending" ? "down" : "up"}{" "}
+            the pattern
+          </div>
           <button
+            className={styles.flipButton}
             onClick={() => {
               setPattern(M.Pattern.flippingVertically);
               setCursor((prev) => ({
@@ -105,13 +104,6 @@ function App() {
           </button>
         </div>
         <div className={styles.minimapContainer}>
-          <div
-            className={styles.verticalDirectionIndicator}
-            data-direction={cursor.directionVertical}
-          >
-            moving {cursor.directionVertical === "ascending" ? "down" : "up"}{" "}
-            the pattern
-          </div>
           <div className={styles.minimapMain}>
             <div className={styles.filePicker} onClick={launchFilePicker}>
               Upload pattern...
@@ -122,6 +114,27 @@ function App() {
               {M.Pattern.extents(pattern).width} columns
             </div>
           </div>
+        </div>
+        <div className={styles.flipContainer}>
+          <div
+            className={classNames(styles.directionIndicator, styles.horizontal)}
+            data-direction={cursor.directionHorizontal}
+          >
+            Looking at{" "}
+            <em>{cursor.directionHorizontal === "ltr" ? "front" : "back"}</em>{" "}
+            side of piece
+          </div>
+          <button
+            className={styles.flipButton}
+            onClick={() => {
+              setCursor((prev) => ({
+                ...prev,
+                directionHorizontal: flipHoriz(prev.directionHorizontal),
+              }));
+            }}
+          >
+            Flip horizontally (turn over)
+          </button>
         </div>
       </div>
       <div className={styles.workspaceContainer}>
