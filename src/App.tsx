@@ -8,9 +8,9 @@ import * as M from "./model";
 import styles from "./App.module.scss";
 import { classNames } from "./utils";
 
-function horizDirToString(dir: "ltr" | "rtl"): string {
-  return dir === "ltr" ? "left-to-right" : "right-to-left";
-}
+// function horizDirToString(dir: "ltr" | "rtl"): string {
+//   return dir === "ltr" ? "left-to-right" : "right-to-left";
+// }
 
 function flipHoriz(
   dir: "ltr" | "rtl",
@@ -51,6 +51,7 @@ function App() {
   const [pattern, setPattern] = useAtom(A.pattern);
   const [, setPalette] = useAtom(A.palette);
   const [cursor, setCursor] = useAtom(A.cursor);
+  const [bookmark, setBookmark] = useAtom(A.bookmark);
 
   const incrementCursor = React.useCallback(
     (delta: number) => {
@@ -172,7 +173,23 @@ function App() {
           }}
         >
           <button
-            className={styles.jumpToNextStitchChange}
+            disabled={bookmark == null}
+            onClick={() => {
+              if (bookmark != null) {
+                setCursor(bookmark);
+              }
+            }}
+          >
+            Jump to bookmark
+          </button>
+          <button
+            onClick={() => {
+              setBookmark(cursor);
+            }}
+          >
+            Save bookmark
+          </button>
+          <button
             onClick={() => {
               const untilNextStitchType = M.Pattern.countUntilStitchChange(
                 pattern,

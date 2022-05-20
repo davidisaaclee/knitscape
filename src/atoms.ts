@@ -7,3 +7,5 @@ export const pattern = atomWithStorage<M.Pattern>(
 );
 export const palette = atomWithStorage<M.Palette>("palette", {});
 export const cursor = atomWithStorage<M.Cursor>("cursor", M.Cursor.create());
+
+export const bookmark = atomWithStorage<M.Cursor | null>("bookmark", null);
