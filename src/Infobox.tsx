@@ -20,8 +20,8 @@ export function Infobox({ className, style }: CSSForwardingProps) {
   const stitchesUntilEndOfRow = React.useMemo(
     () =>
       cursor.directionHorizontal === "ltr"
-        ? M.Pattern.extents(pattern).width - cursor.column - 1
-        : cursor.column,
+        ? M.Pattern.extents(pattern).width - cursor.column
+        : cursor.column + 1,
     [pattern, cursor]
   );
   const nextStitchColor = React.useMemo(
@@ -35,8 +35,8 @@ export function Infobox({ className, style }: CSSForwardingProps) {
   return (
     <div className={classNames(styles.container, className)} style={style}>
       <div>
-        <b>{nextStitchChange.count - 1}</b> more{" "}
-        {pluralize("stitch", "stitches")(nextStitchChange.count - 1)} until next
+        <b>{nextStitchChange.count}</b> more{" "}
+        {pluralize("stitch", "stitches")(nextStitchChange.count)} until next
         color{" "}
         {nextStitchColor != null && (
           <span>
