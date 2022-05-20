@@ -82,6 +82,27 @@ function App() {
 
   return (
     <div className={styles.container}>
+      <button
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          opacity: 0.1,
+        }}
+        onClick={() => {
+          if ("serviceWorker" in navigator) {
+            navigator.serviceWorker
+              .getRegistrations()
+              .then(function (registrations) {
+                for (let registration of registrations) {
+                  registration.update();
+                }
+              });
+          }
+        }}
+      >
+        Update app
+      </button>
       <div className={styles.topSection}>
         <div className={styles.flipContainer}>
           <div
