@@ -79,3 +79,28 @@
   margin: 2px;
   border: 1px solid black;
 }
+
+.bookmark {
+  position: absolute;
+  left: 4px;
+  top: -2px;
+
+  width: 8px;
+  height: 6px;
+  background-color: red;
+
+  &::after {
+    content: "";
+
+    width: 0;
+    height: 0;
+
+    top: 4px;
+    position: absolute;
+
+    border-bottom: 4px solid transparent;
+    border-right: 4px solid red;
+    border-left: 4px solid red;
+    border-top: 4px solid red;
+  }
+}

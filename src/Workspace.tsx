@@ -19,6 +19,7 @@ export function Workspace({ style, className }: CSSForwardingProps) {
   const [palette] = useAtom(A.palette);
   const [pattern] = useAtom(A.pattern);
   const [cursor, setCursor] = useAtom(A.cursor);
+  const [bookmark] = useAtom(A.bookmark);
 
   const [bounds, setBounds] = React.useState<null | {
     width: number;
@@ -142,6 +143,11 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                           }));
                         }}
                       >
+                        {bookmark != null &&
+                          row.rowIndex === bookmark.row &&
+                          stitch.column === bookmark.column && (
+                            <div className={styles.bookmark} />
+                          )}
                         {row.rowIndex === cursor.row &&
                           (stitch.column % 5 === 0 ||
                             stitch.column === cursor.column) && (

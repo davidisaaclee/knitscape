@@ -88,14 +88,14 @@ function App() {
   });
 
   const stitchesSinceBookmark = React.useMemo(() => {
+    if (bookmark == null) {
+      return null;
+    }
     const patternExtents = M.Pattern.extents(pattern);
     const distanceFromStartToCursor = M.Cursor.stitchCountSinceStartOfPattern(
       cursor,
       patternExtents
     );
-    if (bookmark == null) {
-      return distanceFromStartToCursor;
-    }
     const distanceFromStartToBookmark = M.Cursor.stitchCountSinceStartOfPattern(
       bookmark,
       patternExtents
