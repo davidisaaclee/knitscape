@@ -2,12 +2,8 @@ import * as React from "react";
 import { useAtom } from "jotai";
 import * as A from "./atoms";
 import * as M from "./model";
-import { CSSForwardingProps, classNames } from "./utils";
+import { CSSForwardingProps, classNames, pluralize } from "./utils";
 import styles from "./Infobox.module.scss";
-
-function pluralize(singular: string, plural: string): (n: number) => string {
-  return (n) => (n === 1 ? singular : plural);
-}
 
 export function Infobox({ className, style }: CSSForwardingProps) {
   const [cursor] = useAtom(A.cursor);
@@ -51,7 +47,7 @@ export function Infobox({ className, style }: CSSForwardingProps) {
           </span>
         )}
       </div>
-      <div className={styles.nextRowInfo}>
+      <div className={styles.secondaryInfo}>
         <b>{stitchesUntilEndOfRow}</b> more{" "}
         {pluralize("stitch", "stitches")(stitchesUntilEndOfRow)} until end of
         row

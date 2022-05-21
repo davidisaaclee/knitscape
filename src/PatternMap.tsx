@@ -36,6 +36,7 @@ export function PatternMap({ ...forwardedProps }: CSSForwardingProps) {
   const [palette] = useAtom(A.palette);
   const [pattern] = useAtom(A.pattern);
   const [cursor, setCursor] = useAtom(A.cursor);
+  const [bookmark] = useAtom(A.bookmark);
 
   const backgroundCanvasRef = React.useRef<React.ElementRef<"canvas">>(null);
   const overlayCanvasRef = React.useRef<React.ElementRef<"canvas">>(null);
@@ -75,7 +76,24 @@ export function PatternMap({ ...forwardedProps }: CSSForwardingProps) {
     ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
     ctx.fillRect(0, cursor.row, patternExtents.width, 1);
     ctx.fillRect(cursor.column, 0, 1, patternExtents.height);
-  }, [pattern, cursor]);
+
+    if (bookmark != null) {
+      ctx.fillStyle = "orange";
+      const crosshairSize = 1;
+      ctx.fillRect(
+        bookmark.column,
+        bookmark.row - crosshairSize,
+        1,
+        crosshairSize * 2 + 1
+      );
+      ctx.fillRect(
+        bookmark.column - crosshairSize,
+        bookmark.row,
+        crosshairSize * 2 + 1,
+        1
+      );
+    }
+  }, [pattern, cursor, bookmark]);
 
   return (
     <div {...forwardedProps}>

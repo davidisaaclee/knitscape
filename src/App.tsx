@@ -12,6 +12,13 @@ import { classNames } from "./utils";
 //   return dir === "ltr" ? "left-to-right" : "right-to-left";
 // }
 
+function toStringWithSign(n: number): string {
+  if (n > 0) {
+    return `+${n}`;
+  }
+  return n.toString();
+}
+
 function flipHoriz(
   dir: "ltr" | "rtl",
   shouldFlip: boolean = true
@@ -79,6 +86,22 @@ function App() {
       setCursor(M.Cursor.create());
     },
   });
+
+  const stitchesSinceBookmark = React.useMemo(() => {
+    const patternExtents = M.Pattern.extents(pattern);
+    const distanceFromStartToCursor = M.Cursor.stitchCountSinceStartOfPattern(
+      cursor,
+      patternExtents
+    );
+    if (bookmark == null) {
+      return distanceFromStartToCursor;
+    }
+    const distanceFromStartToBookmark = M.Cursor.stitchCountSinceStartOfPattern(
+      bookmark,
+      patternExtents
+    );
+    return Math.abs(distanceFromStartToBookmark - distanceFromStartToCursor);
+  }, [bookmark, cursor, pattern]);
 
   return (
     <div className={styles.container}>
@@ -183,25 +206,37 @@ function App() {
             display: "flex",
             flexDirection: "row",
             alignItems: "stretch",
+            justifyContent: "space-between",
           }}
         >
-          <button
-            disabled={bookmark == null}
-            onClick={() => {
-              if (bookmark != null) {
-                setCursor(bookmark);
-              }
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "stretch",
             }}
           >
-            Jump to bookmark
-          </button>
-          <button
-            onClick={() => {
-              setBookmark(cursor);
-            }}
-          >
-            Save bookmark
-          </button>
+            <button
+              disabled={bookmark == null}
+              onClick={() => {
+                if (bookmark != null) {
+                  setCursor(bookmark);
+                }
+              }}
+            >
+              Jump to bookmark{" "}
+              {stitchesSinceBookmark == null || stitchesSinceBookmark === 0
+                ? ""
+                : `(${toStringWithSign(-stitchesSinceBookmark)})`}
+            </button>
+            <button
+              onClick={() => {
+                setBookmark(cursor);
+              }}
+            >
+              Save bookmark
+            </button>
+          </div>
           <button
             onClick={() => {
               const untilNextStitchType = M.Pattern.countUntilStitchChange(

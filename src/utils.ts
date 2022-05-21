@@ -16,3 +16,10 @@ export function classNames(
   }
   return namesToInclude.join(" ");
 }
+
+export function pluralize(
+  singular: string,
+  plural: string
+): (n: number) => string {
+  return (n) => (n === 1 ? singular : plural);
+}

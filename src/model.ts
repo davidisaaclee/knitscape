@@ -140,6 +140,18 @@ export const Cursor = {
       directionHorizontal: outDirH,
     };
   },
+
+  stitchCountSinceStartOfPattern(
+    c: Cursor,
+    patternExtents: { width: number; height: number }
+  ): number {
+    const countInCurrentRow =
+      c.directionHorizontal === "ltr"
+        ? c.column
+        : patternExtents.width - c.column;
+    const countForPreviousRows = c.row * patternExtents.width;
+    return countInCurrentRow + countForPreviousRows;
+  },
 };
 
 function stitch(mat: number): Stitch {
