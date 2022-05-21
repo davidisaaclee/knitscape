@@ -7,6 +7,21 @@ import * as A from "./atoms";
 import * as M from "./model";
 import styles from "./App.module.scss";
 import { classNames } from "./utils";
+import NoSleep from "nosleep.js";
+
+const noSleep = new NoSleep();
+function useWakeLock() {
+  React.useLayoutEffect(() => {
+    document.addEventListener(
+      "click",
+      function enableNoSleep() {
+        document.removeEventListener("click", enableNoSleep, false);
+        noSleep.enable();
+      },
+      false
+    );
+  }, []);
+}
 
 // function horizDirToString(dir: "ltr" | "rtl"): string {
 //   return dir === "ltr" ? "left-to-right" : "right-to-left";
@@ -55,6 +70,8 @@ function imageDataFrom(url: string): Promise<ImageData> {
 }
 
 function App() {
+  useWakeLock();
+
   const [pattern, setPattern] = useAtom(A.pattern);
   const [, setPalette] = useAtom(A.palette);
   const [cursor, setCursor] = useAtom(A.cursor);
@@ -116,7 +133,7 @@ function App() {
           window.location.reload();
         }}
       >
-        v5
+        v6
       </button>
       <div className={styles.topSection}>
         <div className={styles.flipContainer}>
