@@ -90,15 +90,7 @@ function App() {
           opacity: 0.1,
         }}
         onClick={() => {
-          if ("serviceWorker" in navigator) {
-            navigator.serviceWorker
-              .getRegistrations()
-              .then(function (registrations) {
-                for (let registration of registrations) {
-                  registration.update();
-                }
-              });
-          }
+          window.location.reload();
         }}
       >
         v2
