@@ -29,10 +29,6 @@
     }
   }
 
-  .jumpFive {
-    flex: 0.1;
-  }
-
   & .auxiliary {
     & button {
       padding: 8px;
@@ -49,4 +45,9 @@
 
 .mainRow {
   flex: 1;
+}
+
+.redo {
+  background-color: #ccc;
+  color: black;
 }

@@ -43,8 +43,26 @@ function imageDataFrom(url: string): Promise<ImageData> {
   });
 }
 
+function useMigrateLegacyCursor() {
+  const [legacyCursor, setLegacyCursor] = useAtom(A.legacyCursor);
+  const [, setCursorHistory] = useAtom(A.cursorHistory);
+
+  React.useEffect(
+    () => {
+      if (legacyCursor.row === -1) {
+        return;
+      }
+      setCursorHistory({ commits: [legacyCursor], index: 0 });
+      setLegacyCursor((prev) => ({ ...prev, row: -1 }));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+}
+
 function App() {
   useWakeLock();
+  useMigrateLegacyCursor();
 
   const [pattern, setPattern] = useAtom(A.pattern);
   const [, setPalette] = useAtom(A.palette);

@@ -17,6 +17,7 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
   const [pattern] = useAtom(A.pattern);
   const [cursor, setCursor] = useAtom(A.cursor);
   const [bookmark, setBookmark] = useAtom(A.bookmark);
+  const cursorHistory = A.useCursorHistory();
 
   const incrementCursor = React.useCallback(
     (delta: number) => {
@@ -97,8 +98,16 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
           </button>
           <button onClick={() => setBookmark(cursor)}>Save bookmark</button>
         </div>
-        <button className={styles.jumpFive} onClick={() => incrementCursor(5)}>
-          Jump 5
+        <button
+          className={classNames(
+            cursorHistory.resetType === "undo" && styles.undo,
+            cursorHistory.resetType === "redo" && styles.redo
+          )}
+          onClick={() => {
+            cursorHistory.reset();
+          }}
+        >
+          {cursorHistory.resetType === "undo" ? "Undo" : "Redo"} last jump
         </button>
       </div>
       <div className={styles.toolbarRow}>
