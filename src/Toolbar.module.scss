@@ -1,0 +1,42 @@
+.toolbar {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  flex-flow: column nowrap;
+
+  & > * {
+    margin: 4px;
+    font-size: 18px;
+  }
+
+  & > button {
+    display: flex;
+    touch-action: manipulation;
+  }
+
+  .back {
+    margin-right: 20px;
+  }
+
+  .next {
+    flex: 1;
+    background: var(--primary-action-background);
+    color: var(--primary-action-title-color);
+    -webkit-tap-highlight-color: hsla(0, 0%, 100%, 0);
+
+    &:active {
+      background-color: var(--primary-action-active-highlight);
+    }
+  }
+
+  .jumpFive {
+    flex: 0.1;
+  }
+
+  & .auxiliary {
+    & button {
+      padding: 8px;
+    }
+  }
+}
+
