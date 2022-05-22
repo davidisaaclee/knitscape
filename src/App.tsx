@@ -97,7 +97,7 @@ function App() {
           window.location.reload();
         }}
       >
-        v7
+        v8
       </button>
       <div className={styles.topSection}>
         <div className={styles.flipContainer}>
