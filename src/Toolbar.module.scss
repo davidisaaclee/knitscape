@@ -18,7 +18,7 @@
     margin-right: 20px;
   }
 
-  .next {
+  .primaryAction {
     flex: 1;
     background: var(--primary-action-background);
     color: var(--primary-action-title-color);
@@ -40,3 +40,13 @@
   }
 }
 
+.toolbarRow {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.mainRow {
+  flex: 1;
+}

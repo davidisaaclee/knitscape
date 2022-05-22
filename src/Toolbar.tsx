@@ -4,7 +4,7 @@ import Infobox from "./Infobox";
 import * as A from "./atoms";
 import * as M from "./model";
 import styles from "./Toolbar.module.scss";
-import { CSSForwardingProps, classNames } from "./utils";
+import { CSSForwardingProps, classNames, flipHoriz } from "./utils";
 
 function toStringWithSign(n: number): string {
   if (n > 0) {
@@ -45,17 +45,36 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
     return Math.abs(distanceFromStartToBookmark - distanceFromStartToCursor);
   }, [bookmark, cursor, pattern]);
 
+  const jumpToNextColor = React.useCallback(() => {
+    const untilNextStitchType = M.Pattern.countUntilStitchChange(
+      pattern,
+      cursor
+    );
+    setCursor((c) =>
+      M.Cursor.offsetBy(
+        c,
+        untilNextStitchType.count,
+        M.Pattern.extents(pattern)
+      )
+    );
+  }, [pattern, cursor, setCursor]);
+  const jumpToPreviousColor = React.useCallback(() => {
+    const untilNextStitchType = M.Pattern.countUntilStitchChange(pattern, {
+      ...cursor,
+      directionHorizontal: flipHoriz(cursor.directionHorizontal),
+    });
+    setCursor((c) =>
+      M.Cursor.offsetBy(
+        c,
+        -untilNextStitchType.count,
+        M.Pattern.extents(pattern)
+      )
+    );
+  }, [pattern, cursor, setCursor]);
+
   return (
     <div className={classNames(styles.toolbar, className)} style={style}>
-      <div
-        className={styles.auxiliary}
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "stretch",
-          justifyContent: "space-between",
-        }}
-      >
+      <div className={classNames(styles.toolbarRow, styles.auxiliary)}>
         <div
           style={{
             display: "flex",
@@ -76,57 +95,22 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
               ? ""
               : `(${toStringWithSign(-stitchesSinceBookmark)})`}
           </button>
-          <button
-            onClick={() => {
-              setBookmark(cursor);
-            }}
-          >
-            Save bookmark
-          </button>
+          <button onClick={() => setBookmark(cursor)}>Save bookmark</button>
         </div>
-        <button
-          onClick={() => {
-            const untilNextStitchType = M.Pattern.countUntilStitchChange(
-              pattern,
-              cursor
-            );
-            setCursor((c) =>
-              M.Cursor.offsetBy(
-                c,
-                untilNextStitchType.count,
-                M.Pattern.extents(pattern)
-              )
-            );
-          }}
-        >
-          Jump to next color
-        </button>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "stretch",
-        }}
-      >
-        <button className={styles.back} onClick={() => incrementCursor(-1)}>
-          Back
-        </button>
-        <Infobox />
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexFlow: "row nowrap",
-          alignItems: "stretch",
-          flex: 1,
-        }}
-      >
         <button className={styles.jumpFive} onClick={() => incrementCursor(5)}>
           Jump 5
         </button>
-        <button className={styles.next} onClick={() => incrementCursor(1)}>
-          Next
+      </div>
+      <div className={styles.toolbarRow}>
+        <button className={styles.back} onClick={() => incrementCursor(-1)}>
+          Back
+        </button>
+        <Infobox style={{ flex: 1 }} />
+      </div>
+      <div className={classNames(styles.toolbarRow, styles.mainRow)}>
+        <button onClick={jumpToPreviousColor}>Jump to previous color</button>
+        <button className={styles.primaryAction} onClick={jumpToNextColor}>
+          Jump to next color
         </button>
       </div>
     </div>
