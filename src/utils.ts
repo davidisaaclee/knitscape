@@ -23,3 +23,23 @@ export function pluralize(
 ): (n: number) => string {
   return (n) => (n === 1 ? singular : plural);
 }
+
+export function flipHoriz(
+  dir: "ltr" | "rtl",
+  shouldFlip: boolean = true
+): "ltr" | "rtl" {
+  if (!shouldFlip) {
+    return dir;
+  }
+  return dir === "ltr" ? "rtl" : "ltr";
+}
+
+export function flipVert(
+  dir: "ascending" | "descending",
+  shouldFlip: boolean = true
+): "ascending" | "descending" {
+  if (!shouldFlip) {
+    return dir;
+  }
+  return dir === "ascending" ? "descending" : "ascending";
+}

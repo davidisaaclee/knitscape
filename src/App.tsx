@@ -6,7 +6,7 @@ import Toolbar from "./Toolbar";
 import * as A from "./atoms";
 import * as M from "./model";
 import styles from "./App.module.scss";
-import { classNames } from "./utils";
+import { classNames, flipHoriz, flipVert } from "./utils";
 import NoSleep from "nosleep.js";
 
 const noSleep = new NoSleep();
@@ -26,25 +26,6 @@ function useWakeLock() {
 // function horizDirToString(dir: "ltr" | "rtl"): string {
 //   return dir === "ltr" ? "left-to-right" : "right-to-left";
 // }
-
-function flipHoriz(
-  dir: "ltr" | "rtl",
-  shouldFlip: boolean = true
-): "ltr" | "rtl" {
-  if (!shouldFlip) {
-    return dir;
-  }
-  return dir === "ltr" ? "rtl" : "ltr";
-}
-function flipVert(
-  dir: "ascending" | "descending",
-  shouldFlip: boolean = true
-): "ascending" | "descending" {
-  if (!shouldFlip) {
-    return dir;
-  }
-  return dir === "ascending" ? "descending" : "ascending";
-}
 
 function imageDataFrom(url: string): Promise<ImageData> {
   return new Promise((resolve) => {

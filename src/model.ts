@@ -1,4 +1,5 @@
 import { invert, cloneDeep } from "lodash";
+import { flipHoriz } from "./utils";
 
 export type Stitch = number;
 export type Pattern = {
@@ -101,16 +102,6 @@ export const Cursor = {
     delta: number,
     patternExtents: { width: number; height: number }
   ): Cursor {
-    function flipHoriz(
-      dir: "ltr" | "rtl",
-      shouldFlip: boolean = true
-    ): "ltr" | "rtl" {
-      if (!shouldFlip) {
-        return dir;
-      }
-      return dir === "ltr" ? "rtl" : "ltr";
-    }
-
     const prevPosition =
       (prev.directionHorizontal === "ltr"
         ? prev.column
