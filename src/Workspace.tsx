@@ -43,7 +43,7 @@ export function Workspace({ style, className }: CSSForwardingProps) {
           const stitchValues = [...pattern.rows[rowIndex]].map(
             (s, i) => [s, i] as const
           );
-          if (cursor.directionHorizontal === "rtl") {
+          if (cursor.directionHorizontal === "ltr") {
             stitchValues.reverse();
           }
           return {

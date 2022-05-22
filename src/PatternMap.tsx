@@ -115,7 +115,7 @@ export function PatternMap({ ...forwardedProps }: CSSForwardingProps) {
           if (cursor.directionVertical === "descending") {
             position[1] = patternExtents.height - position[1];
           }
-          if (cursor.directionHorizontal === "rtl") {
+          if (cursor.directionHorizontal === "ltr") {
             position[0] = patternExtents.width - position[0];
           }
           setCursor((prev) => ({
@@ -136,7 +136,7 @@ export function PatternMap({ ...forwardedProps }: CSSForwardingProps) {
               cursor.directionVertical === "ascending"
                 ? "scaleY(1)"
                 : "scaleY(-1)",
-              cursor.directionHorizontal === "ltr" ? "scaleX(1)" : "scaleX(-1)",
+              cursor.directionHorizontal === "ltr" ? "scaleX(-1)" : "scaleX(1)",
             ].join(" "),
           }}
         />
@@ -151,7 +151,7 @@ export function PatternMap({ ...forwardedProps }: CSSForwardingProps) {
               cursor.directionVertical === "ascending"
                 ? "scaleY(1)"
                 : "scaleY(-1)",
-              cursor.directionHorizontal === "ltr" ? "scaleX(1)" : "scaleX(-1)",
+              cursor.directionHorizontal === "ltr" ? "scaleX(-1)" : "scaleX(1)",
             ].join(" "),
           }}
         />
