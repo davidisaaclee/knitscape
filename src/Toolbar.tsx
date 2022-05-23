@@ -3,7 +3,7 @@ import { useAtom } from "jotai";
 import * as A from "./atoms";
 import * as M from "./model";
 import styles from "./Toolbar.module.scss";
-import { CSSForwardingProps, classNames, flipHoriz } from "./utils";
+import { CSSForwardingProps, classNames, flipHoriz, flipVert } from "./utils";
 
 function toStringWithSign(n: number): string {
   if (n > 0) {
@@ -75,6 +75,7 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
         -M.Pattern.countUntilStitchChange(pattern, {
           ...cursor,
           directionHorizontal: flipHoriz(cursor.directionHorizontal),
+          directionVertical: flipVert(cursor.directionVertical),
         }).count,
       [pattern, cursor]
     )
