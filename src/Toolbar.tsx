@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useAtom } from "jotai";
-import Infobox from "./Infobox";
 import * as A from "./atoms";
 import * as M from "./model";
 import styles from "./Toolbar.module.scss";
@@ -13,23 +12,32 @@ function toStringWithSign(n: number): string {
   return n.toString();
 }
 
-export function Toolbar({ style, className }: CSSForwardingProps) {
+function useJump(offset: number) {
+  const [cursor, setCursor] = useAtom(A.cursor);
   const [pattern] = useAtom(A.pattern);
   const [palette] = useAtom(A.palette);
+
+  const targetCursor = React.useMemo(
+    () => M.Cursor.offsetBy(cursor, offset, M.Pattern.extents(pattern)),
+    [pattern, cursor, offset]
+  );
+  const stitchInfo = React.useMemo(
+    () => M.Pattern.stitchAt(pattern, targetCursor),
+    [pattern, targetCursor]
+  );
+  const color = React.useMemo(() => palette[stitchInfo], [stitchInfo, palette]);
+  const jump = React.useCallback(() => {
+    setCursor(targetCursor);
+  }, [setCursor, targetCursor]);
+
+  return { offset, color, jump };
+}
+
+export function Toolbar({ style, className }: CSSForwardingProps) {
+  const [pattern] = useAtom(A.pattern);
   const [cursor, setCursor] = useAtom(A.cursor);
   const [bookmark, setBookmark] = useAtom(A.bookmark);
   const cursorHistory = A.useCursorHistory();
-
-  const incrementCursor = React.useCallback(
-    (delta: number) => {
-      const patternExtents = M.Pattern.extents(pattern);
-      if (patternExtents.height + patternExtents.width === 0) {
-        return;
-      }
-      setCursor((prev) => M.Cursor.offsetBy(prev, delta, patternExtents));
-    },
-    [setCursor, pattern]
-  );
 
   const stitchesSinceBookmark = React.useMemo(() => {
     if (bookmark == null) {
@@ -47,52 +55,29 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
     return Math.abs(distanceFromStartToBookmark - distanceFromStartToCursor);
   }, [bookmark, cursor, pattern]);
 
-  const untilNextStitchType = React.useMemo(
-    () => M.Pattern.countUntilStitchChange(pattern, cursor),
+  const stitchesUntilEndOfRow = React.useMemo(
+    () =>
+      cursor.directionHorizontal === "ltr"
+        ? M.Pattern.extents(pattern).width - cursor.column
+        : cursor.column + 1,
     [pattern, cursor]
   );
-  const untilPreviousStitchType = React.useMemo(
-    () =>
-      M.Pattern.countUntilStitchChange(pattern, {
-        ...cursor,
-        directionHorizontal: flipHoriz(cursor.directionHorizontal),
-      }),
-    [pattern, cursor]
+  const untilNextRow = useJump(stitchesUntilEndOfRow);
+  const untilNextStitchType = useJump(
+    React.useMemo(
+      () => M.Pattern.countUntilStitchChange(pattern, cursor).count,
+      [pattern, cursor]
+    )
   );
-
-  const jumpToNextColor = React.useCallback(() => {
-    setCursor((c) =>
-      M.Cursor.offsetBy(
-        c,
-        untilNextStitchType.count,
-        M.Pattern.extents(pattern)
-      )
-    );
-  }, [pattern, untilNextStitchType, setCursor]);
-
-  const jumpToPreviousColor = React.useCallback(() => {
-    setCursor((c) =>
-      M.Cursor.offsetBy(
-        c,
-        -untilPreviousStitchType.count,
-        M.Pattern.extents(pattern)
-      )
-    );
-  }, [pattern, untilPreviousStitchType, setCursor]);
-
-  const nextStitchTypeColor = React.useMemo(
-    () =>
-      untilNextStitchType.stitch == null
-        ? null
-        : palette[untilNextStitchType.stitch.colorIndex],
-    [palette, untilNextStitchType.stitch]
-  );
-  const previousStitchTypeColor = React.useMemo(
-    () =>
-      untilPreviousStitchType.stitch == null
-        ? null
-        : palette[untilPreviousStitchType.stitch.colorIndex],
-    [palette, untilPreviousStitchType.stitch]
+  const untilPreviousStitchType = useJump(
+    React.useMemo(
+      () =>
+        -M.Pattern.countUntilStitchChange(pattern, {
+          ...cursor,
+          directionHorizontal: flipHoriz(cursor.directionHorizontal),
+        }).count,
+      [pattern, cursor]
+    )
   );
 
   return (
@@ -133,21 +118,26 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
         </button>
       </div>
       <div className={styles.toolbarRow}>
-        <Infobox style={{ flex: 1 }} />
+        <JumpButton
+          title="Previous color"
+          onClick={untilPreviousStitchType.jump}
+          offset={untilPreviousStitchType.offset}
+          stitchColor={untilPreviousStitchType.color}
+        />
+        <JumpButton
+          title="Start of next row"
+          onClick={untilNextRow.jump}
+          offset={untilNextRow.offset}
+          stitchColor={untilNextRow.color}
+        />
       </div>
       <div className={classNames(styles.toolbarRow, styles.mainRow)}>
         <JumpButton
-          title="Previous color"
-          onClick={jumpToPreviousColor}
-          offset={-untilPreviousStitchType.count}
-          stitchColor={previousStitchTypeColor}
-        />
-        <JumpButton
           className={styles.primaryAction}
           title="Next color"
-          onClick={jumpToNextColor}
-          offset={untilNextStitchType.count}
-          stitchColor={nextStitchTypeColor}
+          onClick={untilNextStitchType.jump}
+          offset={untilNextStitchType.offset}
+          stitchColor={untilNextStitchType.color}
         />
       </div>
     </div>
