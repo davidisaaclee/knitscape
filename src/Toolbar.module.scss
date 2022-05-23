@@ -1,4 +1,8 @@
 .toolbar {
+
+  & button {
+    font-size: 16px;
+  }
   display: flex;
   align-items: stretch;
   justify-content: space-around;
@@ -15,11 +19,11 @@
   }
 
   .back {
-    margin-right: 20px;
+    margin-right: 10px;
   }
 
   .primaryAction {
-    flex: 1;
+    flex-grow: 1;
     background: var(--primary-action-background);
     color: var(--primary-action-title-color);
     -webkit-tap-highlight-color: hsla(0, 0%, 100%, 0);
@@ -45,6 +49,10 @@
 
 .mainRow {
   flex: 1;
+
+  & button {
+    padding: 20px;
+  }
 }
 
 .redo {
