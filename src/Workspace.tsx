@@ -5,9 +5,9 @@ import * as A from "./atoms";
 import styles from "./Workspace.module.scss";
 import { CSSForwardingProps, classNames } from "./utils";
 
-const stitchSize = 30;
-const focusedRowHeight = 80;
-const backgroundRowHeight = 55;
+const stitchSize = 40;
+const focusedRowHeight = 90;
+const backgroundRowHeight = 60;
 
 interface StitchDisplayInfo {
   color: string;
@@ -140,7 +140,7 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                         )}
                         data-stitchcolumn={stitch.column}
                         style={{
-                          backgroundColor: stitch.color,
+                          // backgroundColor: stitch.color,
                           width: stitchSize,
                           height: stitchSize,
                         }}
@@ -152,6 +152,10 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                           }));
                         }}
                       >
+                        <div
+                          className={styles.stitchColor}
+                          style={{ backgroundColor: stitch.color }}
+                        />
                         {bookmark != null &&
                           row.rowIndex === bookmark.row &&
                           stitch.column === bookmark.column && (
