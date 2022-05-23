@@ -5,7 +5,8 @@ import * as A from "./atoms";
 import styles from "./Workspace.module.scss";
 import { CSSForwardingProps, classNames } from "./utils";
 
-const stitchSize = 40;
+const stitchSize = 25;
+const stitchInteritemSpacing = 16;
 const focusedRowHeight = 90;
 const backgroundRowHeight = 60;
 
@@ -131,7 +132,7 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                     >
                       {row.rowIndex}
                     </span>
-                    {row.stitches.map((stitch) => (
+                    {row.stitches.map((stitch, index) => (
                       <div
                         key={stitch.column}
                         className={classNames(
@@ -140,9 +141,9 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                         )}
                         data-stitchcolumn={stitch.column}
                         style={{
-                          // backgroundColor: stitch.color,
                           width: stitchSize,
                           height: stitchSize,
+                          marginLeft: index === 0 ? 0 : stitchInteritemSpacing,
                         }}
                         onClick={() => {
                           setCursor((c) => ({
@@ -155,12 +156,13 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                         <div
                           className={styles.stitchColor}
                           style={{ backgroundColor: stitch.color }}
-                        />
-                        {bookmark != null &&
-                          row.rowIndex === bookmark.row &&
-                          stitch.column === bookmark.column && (
-                            <div className={styles.bookmark} />
-                          )}
+                        >
+                          {bookmark != null &&
+                            row.rowIndex === bookmark.row &&
+                            stitch.column === bookmark.column && (
+                              <div className={styles.bookmark} />
+                            )}
+                        </div>
                         {row.rowIndex === cursor.row &&
                           (stitch.column % 5 === 0 ||
                             stitch.column === cursor.column) && (

@@ -65,8 +65,9 @@
   }
 
   & .stitchColor {
+    box-sizing: border-box;
+    overflow: hidden;
     position: absolute;
-    transform: scale(0.6);
     width: 100%;
     height: 100%;
     border-radius: 50%;
@@ -95,7 +96,7 @@
 .bookmark {
   position: absolute;
   left: 4px;
-  top: -2px;
+  top: 0px;
 
   width: 8px;
   height: 6px;
