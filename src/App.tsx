@@ -165,7 +165,7 @@ function App() {
             }));
           }}
         >
-          ⬆️ Move a row up
+          ⬆️
         </button>
         <Workspace className={styles.workspace} />
         <button
@@ -177,7 +177,7 @@ function App() {
             }));
           }}
         >
-          ⬇️ Move a row down
+          ⬇️
         </button>
       </div>
       <Toolbar className={styles.toolbar} />

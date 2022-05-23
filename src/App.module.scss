@@ -26,14 +26,15 @@
 .workspaceContainer {
   flex: 1;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   flex-flow: column nowrap;
 }
 
 .rowIncrementButton {
-  padding: 4px;
+  padding: 8px 24px;
   margin: 10px;
+  font-size: 14px;
 }
 
 .workspace {
