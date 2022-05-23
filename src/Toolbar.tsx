@@ -135,7 +135,7 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
       <div className={classNames(styles.toolbarRow, styles.mainRow)}>
         <JumpButton
           className={styles.primaryAction}
-          title="Next color"
+          title={<b>Jump to next color</b>}
           onClick={untilNextStitchType.jump}
           offset={untilNextStitchType.offset}
           stitchColor={untilNextStitchType.color}
@@ -153,7 +153,7 @@ function JumpButton({
   style,
   className,
 }: CSSForwardingProps & {
-  title: string;
+  title: React.ReactNode;
   onClick(): void;
   offset: number;
   stitchColor: string | null;

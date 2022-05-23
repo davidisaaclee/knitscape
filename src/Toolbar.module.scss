@@ -40,10 +40,15 @@
 
 .mainRow {
   flex: 1;
+
+  & .jumpButton {
+    font-size: 16px;
+    padding: 20px;
+  }
 }
 
 .jumpButton {
-    padding: 20px;
+    padding: 10px;
     touch-action: manipulation;
 
     display: flex;
@@ -51,7 +56,7 @@
     align-items: center;
     justify-content: center;
 
-    font-size: 16px;
+    font-size: 14px;
 
     & > * {
       margin: 2px;
