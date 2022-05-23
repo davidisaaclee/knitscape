@@ -6,7 +6,8 @@ import styles from "./Workspace.module.scss";
 import { CSSForwardingProps, classNames } from "./utils";
 
 const stitchSize = 30;
-const rowHeight = 80;
+const focusedRowHeight = 80;
+const backgroundRowHeight = 55;
 
 interface StitchDisplayInfo {
   color: string;
@@ -33,6 +34,7 @@ export function Workspace({ style, className }: CSSForwardingProps) {
   const rowsToDisplay = React.useMemo<
     Array<{
       stitches: StitchDisplayInfo[];
+      isFocused: boolean;
       rowIndex: number;
     }>
   >(
@@ -48,6 +50,7 @@ export function Workspace({ style, className }: CSSForwardingProps) {
           }
           return {
             rowIndex,
+            isFocused: cursor.row === rowIndex,
             stitches: stitchValues.map(([s, column]) => ({
               color: palette[s],
               isFocused: cursor.row === rowIndex && cursor.column === column,
@@ -91,7 +94,7 @@ export function Workspace({ style, className }: CSSForwardingProps) {
           <div
             ref={scrollRef}
             className={styles.scrollContainer}
-            style={{ height: rowHeight * 2 }}
+            style={{ height: focusedRowHeight + backgroundRowHeight }}
           >
             {rowsToDisplay.map(
               (row) =>
@@ -100,10 +103,12 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                     key={row.rowIndex}
                     className={classNames(
                       styles.rowContainer,
-                      row.rowIndex === cursor.row && styles.focusedRow
+                      row.isFocused && styles.focusedRow
                     )}
                     style={{
-                      height: rowHeight,
+                      height: row.isFocused
+                        ? focusedRowHeight
+                        : backgroundRowHeight,
                       paddingLeft: scrollContentInsetHorizontal,
                       paddingRight: scrollContentInsetHorizontal,
                       opacity:
@@ -118,7 +123,11 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                   >
                     <span
                       className={classNames(styles.rowInfoBox, styles.rowIndex)}
-                      style={{ maxHeight: rowHeight }}
+                      style={{
+                        maxHeight: row.isFocused
+                          ? focusedRowHeight
+                          : backgroundRowHeight,
+                      }}
                     >
                       {row.rowIndex}
                     </span>
@@ -159,7 +168,11 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                     ))}
                     <span
                       className={styles.rowInfoBox}
-                      style={{ maxHeight: rowHeight }}
+                      style={{
+                        maxHeight: row.isFocused
+                          ? focusedRowHeight
+                          : backgroundRowHeight,
+                      }}
                     >
                       {Array.from(
                         row.stitches.reduce((allColors, { color }) => {
