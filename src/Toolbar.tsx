@@ -15,6 +15,7 @@ function toStringWithSign(n: number): string {
 
 export function Toolbar({ style, className }: CSSForwardingProps) {
   const [pattern] = useAtom(A.pattern);
+  const [palette] = useAtom(A.palette);
   const [cursor, setCursor] = useAtom(A.cursor);
   const [bookmark, setBookmark] = useAtom(A.bookmark);
   const cursorHistory = A.useCursorHistory();
@@ -46,11 +47,20 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
     return Math.abs(distanceFromStartToBookmark - distanceFromStartToCursor);
   }, [bookmark, cursor, pattern]);
 
+  const untilNextStitchType = React.useMemo(
+    () => M.Pattern.countUntilStitchChange(pattern, cursor),
+    [pattern, cursor]
+  );
+  const untilPreviousStitchType = React.useMemo(
+    () =>
+      M.Pattern.countUntilStitchChange(pattern, {
+        ...cursor,
+        directionHorizontal: flipHoriz(cursor.directionHorizontal),
+      }),
+    [pattern, cursor]
+  );
+
   const jumpToNextColor = React.useCallback(() => {
-    const untilNextStitchType = M.Pattern.countUntilStitchChange(
-      pattern,
-      cursor
-    );
     setCursor((c) =>
       M.Cursor.offsetBy(
         c,
@@ -58,20 +68,32 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
         M.Pattern.extents(pattern)
       )
     );
-  }, [pattern, cursor, setCursor]);
+  }, [pattern, untilNextStitchType, setCursor]);
+
   const jumpToPreviousColor = React.useCallback(() => {
-    const untilNextStitchType = M.Pattern.countUntilStitchChange(pattern, {
-      ...cursor,
-      directionHorizontal: flipHoriz(cursor.directionHorizontal),
-    });
     setCursor((c) =>
       M.Cursor.offsetBy(
         c,
-        -untilNextStitchType.count,
+        -untilPreviousStitchType.count,
         M.Pattern.extents(pattern)
       )
     );
-  }, [pattern, cursor, setCursor]);
+  }, [pattern, untilPreviousStitchType, setCursor]);
+
+  const nextStitchTypeColor = React.useMemo(
+    () =>
+      untilNextStitchType.stitch == null
+        ? null
+        : palette[untilNextStitchType.stitch.colorIndex],
+    [palette, untilNextStitchType.stitch]
+  );
+  const previousStitchTypeColor = React.useMemo(
+    () =>
+      untilPreviousStitchType.stitch == null
+        ? null
+        : palette[untilPreviousStitchType.stitch.colorIndex],
+    [palette, untilPreviousStitchType.stitch]
+  );
 
   return (
     <div className={classNames(styles.toolbar, className)} style={style}>
@@ -111,16 +133,56 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
         </button>
       </div>
       <div className={styles.toolbarRow}>
-        <button className={styles.back} onClick={() => incrementCursor(-1)}>
-          Back
-        </button>
         <Infobox style={{ flex: 1 }} />
       </div>
       <div className={classNames(styles.toolbarRow, styles.mainRow)}>
-        <button onClick={jumpToPreviousColor}>Jump to previous color</button>
-        <button className={styles.primaryAction} onClick={jumpToNextColor}>
-          Jump to next color
-        </button>
+        <JumpButton
+          title="Previous color"
+          onClick={jumpToPreviousColor}
+          offset={-untilPreviousStitchType.count}
+          stitchColor={previousStitchTypeColor}
+        />
+        <JumpButton
+          className={styles.primaryAction}
+          title="Next color"
+          onClick={jumpToNextColor}
+          offset={untilNextStitchType.count}
+          stitchColor={nextStitchTypeColor}
+        />
+      </div>
+    </div>
+  );
+}
+
+function JumpButton({
+  onClick,
+  title,
+  offset,
+  stitchColor,
+  style,
+  className,
+}: CSSForwardingProps & {
+  title: string;
+  onClick(): void;
+  offset: number;
+  stitchColor: string | null;
+}) {
+  return (
+    <div
+      role="button"
+      className={classNames(styles.jumpButton, className)}
+      style={style}
+      onClick={onClick}
+    >
+      <span>{title}</span>
+      <div>
+        <span>({toStringWithSign(offset)})</span>
+        {stitchColor != null && (
+          <span
+            className={styles.colorPreview}
+            style={{ backgroundColor: stitchColor }}
+          />
+        )}
       </div>
     </div>
   );

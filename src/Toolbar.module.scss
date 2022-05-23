@@ -1,8 +1,4 @@
 .toolbar {
-
-  & button {
-    font-size: 16px;
-  }
   display: flex;
   align-items: stretch;
   justify-content: space-around;
@@ -11,11 +7,6 @@
   & > * {
     margin: 4px;
     font-size: 18px;
-  }
-
-  & > button {
-    display: flex;
-    touch-action: manipulation;
   }
 
   .back {
@@ -49,13 +40,39 @@
 
 .mainRow {
   flex: 1;
+}
 
-  & button {
+.jumpButton {
     padding: 20px;
-  }
+    touch-action: manipulation;
+
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 16px;
+
+    & > * {
+      margin: 2px;
+    }
+
+    & .colorPreview {
+      margin: 0 8px;
+    }
 }
 
 .redo {
   background-color: #ccc;
   color: black;
+}
+
+.colorPreview {
+  flex-shrink: 0;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 1px solid black;
+  transform: translateY(2px);
+  margin: 0 1px;
 }

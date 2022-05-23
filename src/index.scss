@@ -41,7 +41,7 @@ body {
   display: flex;
 }
 
-button {
+button, [role="button"] {
   border: none;
   display: flex;
   align-items: center;
@@ -49,4 +49,6 @@ button {
 
   background: var(--secondary-action-background);
   color: var(--secondary-action-title-color);
+
+  font-family: sans-serif;
 }
