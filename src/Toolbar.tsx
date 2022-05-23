@@ -84,13 +84,7 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
   return (
     <div className={classNames(styles.toolbar, className)} style={style}>
       <div className={classNames(styles.toolbarRow, styles.auxiliary)}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "stretch",
-          }}
-        >
+        <div className={styles.bookmarkButtons}>
           <button
             disabled={bookmark == null}
             onClick={() => {
@@ -167,7 +161,7 @@ function JumpButton({
     >
       <span>{title}</span>
       <div>
-        <span>({toStringWithSign(offset)})</span>
+        <span>({toStringWithSign(offset)} stitches)</span>
         {stitchColor != null && (
           <span
             className={styles.colorPreview}

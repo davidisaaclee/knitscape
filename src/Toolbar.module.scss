@@ -31,6 +31,16 @@
   }
 }
 
+.bookmarkButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  & > * {
+    margin: 4px 0;
+  }
+}
+
 .toolbarRow {
   display: flex;
   flex-direction: row;
