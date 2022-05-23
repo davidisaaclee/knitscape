@@ -32,8 +32,7 @@ export function Infobox({ className, style }: CSSForwardingProps) {
     <div className={classNames(styles.container, className)} style={style}>
       <div className={styles.nextStitchInfo}>
         <b>{nextStitchChange.count}</b> more{" "}
-        {pluralize("stitch", "stitches")(nextStitchChange.count)} until next
-        color{" "}
+        {pluralize("stitch", "stitches")(nextStitchChange.count)} to next color{" "}
         {nextStitchColor != null && (
           <span>
             (
@@ -49,8 +48,7 @@ export function Infobox({ className, style }: CSSForwardingProps) {
       </div>
       <div className={styles.secondaryInfo}>
         <b>{stitchesUntilEndOfRow}</b> more{" "}
-        {pluralize("stitch", "stitches")(stitchesUntilEndOfRow)} until end of
-        row
+        {pluralize("stitch", "stitches")(stitchesUntilEndOfRow)} to end of row
       </div>
     </div>
   );
