@@ -53,6 +53,7 @@ button, [role="button"] {
   font-family: sans-serif;
 }
 
-button {
+button, [role="button"] {
   margin: 0;
+  border-radius: 6px;
 }

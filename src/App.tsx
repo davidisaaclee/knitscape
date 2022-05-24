@@ -123,7 +123,11 @@ function App() {
         </div>
         <div className={styles.minimapContainer}>
           <div className={styles.minimapMain}>
-            <div className={styles.filePicker} onClick={launchFilePicker}>
+            <div
+              className={styles.filePicker}
+              role="button"
+              onClick={launchFilePicker}
+            >
               Upload pattern...
             </div>
             <PatternMap className={styles.minimap} />
