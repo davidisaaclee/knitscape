@@ -8,7 +8,7 @@ import { CSSForwardingProps, classNames } from "./utils";
 const stitchSize = 25;
 const stitchInteritemSpacing = 16;
 const focusedRowHeight = 90;
-const backgroundRowHeight = 60;
+const backgroundRowHeight = 70;
 
 interface StitchDisplayInfo {
   color: string;
@@ -95,7 +95,7 @@ export function Workspace({ style, className }: CSSForwardingProps) {
           <div
             ref={scrollRef}
             className={styles.scrollContainer}
-            style={{ height: focusedRowHeight + backgroundRowHeight }}
+            style={{ height: focusedRowHeight + backgroundRowHeight - 10 }}
           >
             {rowsToDisplay.map(
               (row) =>
