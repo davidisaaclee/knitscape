@@ -46,22 +46,22 @@
 
 .stitch {
   z-index: 0;
+  transform: scale(1);
 
-  &:not(.focusedRow) {
-    transform: scale(0.7);
+  .rowContainer:not(.focusedRow) & {
+    opacity: 0.4;
   }
 
-  .focusedRow &:not(.focusedStitch) {
-    transform: scale(1);
-  }
+  .rowContainer.focusedRow & {
+    &.focusedStitch {
+      transform: scale(1.5);
+      z-index: 1;
 
-  &.focusedStitch {
-    transform: scale(1.5);
-    z-index: 1;
-
-    & .columnIndex {
-      transform: translateY(5px);
+      & .columnIndex {
+        transform: translateY(5px);
+      }
     }
+
   }
 
   & .stitchColor {
