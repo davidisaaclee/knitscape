@@ -112,11 +112,16 @@ export function Workspace({ style, className }: CSSForwardingProps) {
                         : backgroundRowHeight,
                       paddingLeft: scrollContentInsetHorizontal,
                       paddingRight: scrollContentInsetHorizontal,
-                      opacity:
-                        row.rowIndex === cursor.row ||
-                        row.rowIndex === cursor.row - 1
-                          ? 1
-                          : 0,
+                      opacity: (() => {
+                        switch (row.rowIndex) {
+                          case cursor.row:
+                            return 1;
+                          case cursor.row - 1:
+                            return 0.2;
+                          default:
+                            return 0;
+                        }
+                      })(),
                       transform: `translateY(${
                         (cursor.row - row.rowIndex) * 100
                       }%)`,
