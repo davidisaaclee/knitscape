@@ -67,6 +67,13 @@
 
 .mainRow {
   flex: 1;
+
+  & > * {
+    margin-right: 8px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
 }
 
 .jumpButton {
@@ -105,4 +112,8 @@
   margin: 0 1px;
 
   box-sizing: border-box;
+}
+
+.incrementButton {
+  padding: 0 8px;
 }

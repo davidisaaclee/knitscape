@@ -76,6 +76,17 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
         : cursor.column + 1,
     [patternExtents, cursor]
   );
+
+  const incrementCursor = React.useCallback(
+    (delta: number) => {
+      if (patternExtents.height + patternExtents.width === 0) {
+        return;
+      }
+      setCursor((prev) => M.Cursor.offsetBy(prev, delta, patternExtents));
+    },
+    [setCursor, patternExtents]
+  );
+
   const untilNextRow = useJump(stitchesUntilEndOfRow);
   const untilNextStitchType = useJump(
     React.useMemo(
@@ -155,6 +166,12 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
         />
       </div>
       <div className={classNames(styles.toolbarRow, styles.mainRow)}>
+        <button
+          className={styles.incrementButton}
+          onClick={() => incrementCursor(-1)}
+        >
+          -1
+        </button>
         <div
           role="button"
           className={classNames(styles.jumpButton, styles.primaryAction)}
@@ -184,6 +201,18 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
             />
           )}
         </div>
+        <button
+          className={styles.incrementButton}
+          onClick={() => incrementCursor(1)}
+        >
+          +1
+        </button>
+        <button
+          className={styles.incrementButton}
+          onClick={() => incrementCursor(5)}
+        >
+          +5
+        </button>
       </div>
     </div>
   );
