@@ -47,7 +47,7 @@ export const Pattern = {
   } {
     const patternExtents = Pattern.extents(p);
 
-    const offset = start.row * patternExtents.width + start.column;
+    const offset = Cursor.stitchCountSinceStartOfPattern(start, patternExtents);
     const startStitch = Pattern.stitchAt(p, start);
 
     for (let i = 0; i + offset < Pattern.stitchCount(p); i++) {
@@ -139,7 +139,7 @@ export const Cursor = {
     const countInCurrentRow =
       c.directionHorizontal === "ltr"
         ? c.column
-        : patternExtents.width - c.column;
+        : patternExtents.width - 1 - c.column;
     const countForPreviousRows = c.row * patternExtents.width;
     return countInCurrentRow + countForPreviousRows;
   },
