@@ -1,9 +1,16 @@
 import * as React from "react";
 import { useAtom } from "jotai";
+import { compact } from "lodash";
 import * as A from "./atoms";
 import * as M from "./model";
 import styles from "./Toolbar.module.scss";
-import { CSSForwardingProps, classNames, flipHoriz, flipVert } from "./utils";
+import {
+  CSSForwardingProps,
+  classNames,
+  flipHoriz,
+  flipVert,
+  pluralize,
+} from "./utils";
 
 function toStringWithSign(n: number): string {
   if (n > 0) {
@@ -11,6 +18,9 @@ function toStringWithSign(n: number): string {
   }
   return n.toString();
 }
+
+const pluralizeStitch = pluralize("stitch", "stitches");
+const pluralizeRow = pluralize("row", "rows");
 
 function useJump(offset: number) {
   const [cursor, setCursor] = useAtom(A.cursor);
@@ -39,11 +49,15 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
   const [bookmark, setBookmark] = useAtom(A.bookmark);
   const cursorHistory = A.useCursorHistory();
 
+  const patternExtents = React.useMemo(
+    () => M.Pattern.extents(pattern),
+    [pattern]
+  );
+
   const stitchesSinceBookmark = React.useMemo(() => {
     if (bookmark == null) {
       return null;
     }
-    const patternExtents = M.Pattern.extents(pattern);
     const distanceFromStartToCursor = M.Cursor.stitchCountSinceStartOfPattern(
       cursor,
       patternExtents
@@ -53,14 +67,14 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
       patternExtents
     );
     return Math.abs(distanceFromStartToBookmark - distanceFromStartToCursor);
-  }, [bookmark, cursor, pattern]);
+  }, [bookmark, cursor, patternExtents]);
 
   const stitchesUntilEndOfRow = React.useMemo(
     () =>
       cursor.directionHorizontal === "ltr"
-        ? M.Pattern.extents(pattern).width - cursor.column
+        ? patternExtents.width - cursor.column
         : cursor.column + 1,
-    [pattern, cursor]
+    [patternExtents, cursor]
   );
   const untilNextRow = useJump(stitchesUntilEndOfRow);
   const untilNextStitchType = useJump(
@@ -80,6 +94,20 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
       [pattern, cursor]
     )
   );
+
+  const primaryJumpMessage = React.useMemo(() => {
+    if (untilNextStitchType.offset < patternExtents.width) {
+      return `(${untilNextStitchType.offset} ${pluralizeStitch(
+        untilNextStitchType.offset
+      )})`;
+    }
+    const rows = Math.floor(untilNextStitchType.offset / patternExtents.width);
+    const overflow = untilNextStitchType.offset % patternExtents.width;
+    return `(${compact([
+      [rows, pluralizeRow(rows)].join(" "),
+      overflow === 0 ? null : [overflow, pluralizeStitch(overflow)].join(" "),
+    ]).join(" + ")})`;
+  }, [patternExtents.width, untilNextStitchType.offset]);
 
   return (
     <div className={classNames(styles.toolbar, className)} style={style}>
@@ -147,7 +175,7 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
         >
           <div className={styles.primaryActionTitles}>
             <b>Jump to next color</b>
-            <div>({toStringWithSign(untilNextStitchType.offset)} stitches)</div>
+            <div>{primaryJumpMessage}</div>
           </div>
           {untilNextStitchType.color != null && (
             <span
