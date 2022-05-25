@@ -23,10 +23,6 @@ function useWakeLock() {
   }, []);
 }
 
-// function horizDirToString(dir: "ltr" | "rtl"): string {
-//   return dir === "ltr" ? "left-to-right" : "right-to-left";
-// }
-
 function imageDataFrom(url: string): Promise<ImageData> {
   return new Promise((resolve) => {
     const img = new Image();

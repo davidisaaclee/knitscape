@@ -155,13 +155,6 @@ export function Toolbar({ style, className }: CSSForwardingProps) {
         />
       </div>
       <div className={classNames(styles.toolbarRow, styles.mainRow)}>
-        {/* <JumpButton */}
-        {/*   className={styles.primaryAction} */}
-        {/*   title={<b>Jump to next color</b>} */}
-        {/*   onClick={untilNextStitchType.jump} */}
-        {/*   offset={untilNextStitchType.offset} */}
-        {/*   stitchColor={untilNextStitchType.color} */}
-        {/* /> */}
         <div
           role="button"
           className={classNames(styles.jumpButton, styles.primaryAction)}
