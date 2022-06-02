@@ -143,6 +143,31 @@ export const Cursor = {
     const countForPreviousRows = c.row * patternExtents.width;
     return countInCurrentRow + countForPreviousRows;
   },
+
+  // How many stitches to move up/down a specified number of rows? This
+  // respects the every-other-row horizontal direction change - e.g. starting
+  // from column=0 and directionHorizontal=ltr, moving up one row would take 1
+  // stitch: one stitch to start the new row and be at the same horizontal
+  // position on the fabric.
+  offsetToMoveVerticallyRespectingDirectionChange(
+    c: Cursor,
+    rowOffset: number,
+    patternExtents: { width: number; height: number }
+  ): number {
+    return (
+      Cursor.stitchCountSinceStartOfPattern(
+        {
+          ...c,
+          row: c.row + rowOffset,
+          directionHorizontal: flipHoriz(
+            c.directionHorizontal,
+            rowOffset % 2 !== 0
+          ),
+        },
+        patternExtents
+      ) - Cursor.stitchCountSinceStartOfPattern(c, patternExtents)
+    );
+  },
 };
 
 function stitch(mat: number): Stitch {

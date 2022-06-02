@@ -163,10 +163,17 @@ function App() {
         <button
           className={styles.rowIncrementButton}
           onClick={() => {
-            setCursor((prev) => ({
-              ...prev,
-              row: Math.min(pattern.rows.length - 1, prev.row + 1),
-            }));
+            setCursor((prev) =>
+              M.Cursor.offsetBy(
+                prev,
+                M.Cursor.offsetToMoveVerticallyRespectingDirectionChange(
+                  prev,
+                  1,
+                  patternExtents
+                ),
+                patternExtents
+              )
+            );
           }}
         >
           ⬆️
@@ -175,10 +182,17 @@ function App() {
         <button
           className={styles.rowIncrementButton}
           onClick={() => {
-            setCursor((prev) => ({
-              ...prev,
-              row: Math.max(0, prev.row - 1),
-            }));
+            setCursor((prev) =>
+              M.Cursor.offsetBy(
+                prev,
+                M.Cursor.offsetToMoveVerticallyRespectingDirectionChange(
+                  prev,
+                  -1,
+                  patternExtents
+                ),
+                patternExtents
+              )
+            );
           }}
         >
           ⬇️
