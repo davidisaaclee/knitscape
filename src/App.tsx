@@ -80,6 +80,11 @@ function App() {
     },
   });
 
+  const patternExtents = React.useMemo(
+    () => M.Pattern.extents(pattern),
+    [pattern]
+  );
+
   return (
     <div className={styles.container}>
       <button
@@ -128,8 +133,7 @@ function App() {
             </div>
             <PatternMap className={styles.minimap} />
             <div className={styles.dimensionsInfo}>
-              {M.Pattern.extents(pattern).height} rows,{" "}
-              {M.Pattern.extents(pattern).width} columns
+              {patternExtents.height} rows, {patternExtents.width} columns
             </div>
           </div>
         </div>
