@@ -102,7 +102,7 @@ export function PatternMap({ ...forwardedProps }: CSSForwardingProps) {
         onClick={(event) => {
           const bounds = event.currentTarget.getBoundingClientRect();
           const patternExtents = M.Pattern.extents(pattern);
-          const position = [
+          const position: [number, number] = [
             Math.floor(
               (patternExtents.width * (event.clientX - bounds.left)) /
                 bounds.width
@@ -118,11 +118,13 @@ export function PatternMap({ ...forwardedProps }: CSSForwardingProps) {
           if (cursor.directionHorizontal === "ltr") {
             position[0] = patternExtents.width - position[0];
           }
-          setCursor((prev) => ({
-            ...prev,
-            row: position[1],
-            column: position[0],
-          }));
+          setCursor((prev) =>
+            M.Cursor.offsetBy(
+              prev,
+              M.Cursor.stitchCountToPosition(prev, position, patternExtents),
+              patternExtents
+            )
+          );
         }}
       >
         <canvas
