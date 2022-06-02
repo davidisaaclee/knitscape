@@ -166,9 +166,9 @@ function App() {
             setCursor((prev) =>
               M.Cursor.offsetBy(
                 prev,
-                M.Cursor.offsetToMoveVerticallyRespectingDirectionChange(
+                M.Cursor.stitchCountToPosition(
                   prev,
-                  1,
+                  [prev.column, prev.row + 1],
                   patternExtents
                 ),
                 patternExtents
@@ -185,9 +185,9 @@ function App() {
             setCursor((prev) =>
               M.Cursor.offsetBy(
                 prev,
-                M.Cursor.offsetToMoveVerticallyRespectingDirectionChange(
+                M.Cursor.stitchCountToPosition(
                   prev,
-                  -1,
+                  [prev.column, prev.row - 1],
                   patternExtents
                 ),
                 patternExtents
